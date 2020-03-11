@@ -60,12 +60,18 @@ from emp;
    -- sal, bonus, pay, tax, 실수령액은 원화기호와 세자리마다 컴마를 출력
 
 --with with and double select
-select tbb.*, pay-tax 실수령액 from (
+select name, city, 
+TO_CHAR(sal,'L999,999,999') sal,
+TO_CHAR(bonus,'L999,999,999') bonus,
+TO_CHAR(pay,'L999,999,999') pay,
+TO_CHAR(round(pay-tax,1),'L999,999,999') 실수령액 from (
     WITH tb as (
-        select name, city, sal, bonus,
+        select name, city, 
+        sal,
+        bonus,
         sal+nvl(bonus,0) pay from emp
     )
-    select tb.*, pay*0.02 tax from tb
+    select tb.*, round(pay*0.02,1) tax from tb
 ) tbb;
 
 -- with with
@@ -75,13 +81,20 @@ WITH tb as (
     round((sal+nvl(bonus,0))*0.02,1) tax
     from emp
 ) 
-select tb.*, round(pay-tax,1) 실수령액 from tb;
+select 
+name, city,
+TO_CHAR(sal, 'L999,999,999') sal ,
+TO_CHAR(bonus,'L999,999,999') bonus,
+TO_CHAR(pay,'L999,999,999') pay,
+TO_CHAR(round(pay-tax,1),'L999,999,999') 실수령액 from tb;
 
 --without with
-select name, city, sal, bonus, 
-    sal+nvl(bonus,0) pay, 
-    round((sal+nvl(bonus,0))*0.02,1) tax,
-    round(sal+nvl(bonus,0)-round((sal+nvl(bonus,0))*0.02,1),1) 실수령액
+select name, city, 
+    TO_CHAR(sal, 'L999,999,999') sal,
+    TO_CHAR(bonus,'L999,999,999') bonus, 
+    TO_CHAR(sal+nvl(bonus,0),'L999,999,999') pay, 
+    TO_CHAR(round((sal+nvl(bonus,0))*0.02,1),'L999,999,999') tax,
+    TO_CHAR(round(sal+nvl(bonus,0)-round((sal+nvl(bonus,0))*0.02,1),1),'L999,999,999') 실수령액
 from emp;
 
 -- 70년대생(rrn 이용) 중 city가 서울인 사람만 출력
@@ -178,8 +191,8 @@ WITH TB as (
 )
 select tb.*, 
 CASE
-WHEN pay>=3000000 THEN pay*0.03
-WHEN pay>=2500000 THEN pay*0.02
+WHEN pay>=3000000 THEN trunc(pay*0.03,-1)
+WHEN pay>=2500000 THEN trunc(pay*0.02,-1)
 ELSE 0
 END tax
 from TB) TBB;
