@@ -160,17 +160,18 @@ select name, dept, pos from emp
 order by dept,
 DECODE(pos,'부장',0,'과장',1,'대리',2,3);
 
--- name, dept 컬럼을 출력하며, dept가 개발부인 사원을 먼저 출력
+-- (문제 수정) 개발부 => 총무부
+-- name, dept 컬럼을 출력하며, dept가 총무부인 사원을 먼저 출력
 
 select name, dept from emp
 order by 
 CASE dept
-WHEN '개발부' THEN 0
+WHEN '총무부' THEN 0
 else 1
 END;
 
 select name, dept from emp
-order by DECODE(dept,'개발부',0,1);
+order by DECODE(dept,'총무부',0,1);
 
 -- name, rrn, dept, sal 컬럼 출력
    -- 단, 남자를 먼저 출력하고 여자를 출력하며 성별이 같으면 sal 오름차순으로 출력
@@ -359,3 +360,7 @@ FROM tbs;
   -- SUBSTR(), LPAD() 함수를 이용한다.
 select name, rrn, RPAD(substr(rrn,1,8),14,'*') 개인정보보호 from emp;
 select name, rrn, substr(rrn,1,8)||LPAD('*',6,'*') 개인정보보호 from emp; -- 문자열을 결합
+
+-- REPLACE 예제
+-- 전화번호 구분자(-) 없이 출력하기
+ select REPLACE(tel,'-') from emp;
