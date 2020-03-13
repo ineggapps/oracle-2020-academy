@@ -240,33 +240,236 @@
     
     ------------------------------------------------------
     --※ 서브 쿼리 이용 필요
-    -- SELECT는 SELECT에도 올 수 있고 WHERE에서도 올 수 있다.
+    --Sub Query
+    --서브쿼리는 select문만 사용하는 것이 아니다.
+    --SELECT, FROM, WHERE절 등에서 사용되는 SUB QUERY는 단독 실행이 가능하다.
+    --SELECT 절에서 사용하는 경우 하나의 컬럼에 한 행의 결과를 출력하는 경우에만 사용이 가능하다.
+    --WHERE절에서 사용되는 경우 하나의 컬럼만 가능하며
+    --      IN 절에서는 여러 행이 출력되어도 가능하지만
+    --      =,> 등의 연산에서는 하나의 행만 가능하다.
+    
+    --최대 급여는?
+    select MAX(sal) from emp;
     --최대 급여를 받는 사람은?
     select name, sal from emp
     where sal = (select max(sal) from emp);
-    --최소 급여를 받는 사람은?
-    select name, sal from emp
-    where sal = (select min(sal) from emp);
     
+--    where sal = (select max(sal),min(sal) from emp); -- 서브쿼리는 한 줄, 한 컬럼만 가능하다.
+    
+    
+    --급여의 평균차이 구하기    
+    select name, 
+    sal-(select round(avg(sal)) from emp) 평균차이 
+    from emp
+    order by 평균차이 desc, name;
+    
+    select name, sal
+    from emp
+    where sal-(select round(avg(sal)) from emp)>=0
+    order by sal desc;
+    
+    --[부서 인원수]가 [가장 많은 부서명과 인원수] 출력
+    --1. 부서별 인원수
+    select dept, count(dept) from emp group by dept;
+    --2. 가장 많은 부서명과 인원수
+    select dept, COUNT(*) from emp
+    group by dept
+    HAVING count(*) = (select max(count(*)) from emp group by dept);
+    
+    --입사년도별 인원수가 가장 많은 연도 및 인원수
+    
+    --1. 입사년도별 인원수
+    select TO_CHAR(hiredate,'YYYY') 연도, count(*) 수 from emp
+    group by TO_CHAR(hiredate,'YYYY')
+    order by 수 desc;
+    
+    --2. 입사년도 중 인원수가 가장 많은...
+    select max(count(*)) from emp
+    group by TO_CHAR(hiredate,'YYYY');
+    
+    select TO_CHAR(hiredate,'YYYY') 연도, count(*) 수 from emp
+    group by TO_CHAR(hiredate,'YYYY')
+    HAVING count(*) = (select max(count(*)) from emp group by TO_CHAR(hiredate,'YYYY'));
+    
+    --문제1. name에서 성씨가 한 자라는 가정 하에 성씨별 인원수 구하기
+    --1단계. 사원 성씨 모두 출력 (중복 제거)
+    select distinct substr(name,1,1) from emp;
+    --2단계. 성씨별 인원수 구하기
+    select substr(name,1,1) 성씨, count(*) 인원수 from emp 
+    group by substr(name,1,1)
+    order by 성씨;
+    
+    --문제2. sal+bonus가 가장 큰 사람의 이름, sal, bonus 출력
+    --1단계. sal+bonus가 가장 큰 금액 출력
+    select max(sal+bonus) from emp;
+    --2단계. 최종
+    select name, sal, bonus, sal+bonus from emp
+    where sal+bonus = (select max(sal+bonus) from emp);
+    
+    --문제3. 생일이 동일한 사람이 2명 이상인 경우의 name, birth 출력 (초고난도)
+    --XXXXXXXXXXXXX 연도는 비교하지 말았어야 했는데...
+    --1단계. 사원의 생년월일 출력하기
+    select substr(rrn,1,6) from emp;
+    --2단계. 생년월일이 같은 인원이 있는지 검색하기 840505 (2명) << 하나 나옴
+    select substr(rrn,1,6), count(*) from emp group by substr(rrn,1,6);
+    --3단계. 생년월일이 동일한 생년월일 출력하기
+    select count(*) from emp group by substr(rrn,1,6) having count(*)>1;
+    --4단계. 최종
+    select name, substr(rrn,1,6) 생년월일 from emp
+    where substr(rrn,1,6) in (select substr(rrn,1,6) from emp group by substr(rrn,1,6) having count(*)>1);
+    
+    --선생님 풀이
+    --1단계. 사원명과 생일 순서대로 생년월일을 출력하기
+    select name, TO_DATE(SUBSTR(rrn,1,6)) birth from emp
+    order by TO_CHAR(birth,'MMDD');
+    --생일만!! 같은 사람을 비교할 때는 홍길남=정정해,ㅡ 김정훈=유영희, 권옥경=이미경 등등... 많다
+    --2. 생년월일이 같은 항목들의 개수를 각각 출력 
+    select substr(rrn,3,4) from emp 
+    group by substr(rrn,3,4)
+    having count(*) >1;
+    --3. 최종
+    select name, TO_DATE(substr(rrn,1,6)) birth from emp
+    where substr(rrn,3,4) in
+    (
+        select substr(rrn,3,4) from emp 
+        group by substr(rrn,3,4)
+        having count(*) >1
+    )
+    order by TO_CHAR(birth,'MMDD');
+
 -- ※ ROLLUP 절과 CUBE 절
 --    ο ROLLUP 절 예
-       -- dept별 pos의 sal 소계, dept별소계, 마지막에 총계 출력
+--	   소계 및 총계 계산
+--	      ROLLUP(a, b)
+--		    a별 b의 소계 ==> group by a, b와 같은 효과
+--			a별 소계 ==> a 카테고리 안에 모든 내용 합산한 결과까지 (group by a와 같은 효과)
+--			전체 ===> 마지막에 한 번 전체 합산한 결과가 출력됨
+--	        x, ROLLUP(a, b) : x에 대한 y(rollup(a,b))
+--		    x에 대한 a에 대한 b에 대한 소계
+--			x에 대한 a에 대한 소계
+--			x에 대한 소계
+--	        x, ROLLUP(a) => ROLLUP(a)는 a, 전체 총 2번의 결과가 나온다.
+--		    x에 대한 a에 대한 소계
+--			x에 대한 소계
 
+       -- dept별 pos의 sal 소계, dept별소계, 마지막에 총계 출력
+        select dept, pos, sum(sal) from emp
+        group by dept, pos --부서별, 부서 안에서 직위별...
+        order by dept;
+        
+        select dept, pos, sum(sal) from emp
+        group by ROLLUP(dept, pos)
+        order by dept;
+        
+        select pos, dept, sum(sal) from emp
+        group by ROLLUP(pos, dept)
+        order by pos;
 
        -- dept별 pos의 sal 소계, dept별 소계 출력하며 마지막에 총계는 출력하지 않는다.
-
+        SELECT dept, pos, SUM(sal)
+        FROM emp
+		GROUP BY dept, ROLLUP(pos)
+		ORDER BY dept;
+        
+        SELECT dept,  count(*)
+        FROM emp
+		GROUP BY dept;
+        
+        SELECT dept, count(*)
+        FROM emp
+		GROUP BY ROLLUP(dept);
 
 --    ο CUBE 절 예
        -- dept별 pos의 sal 소계, dept별 소계, pos별 소계, 마지막에 총계 출력
-
-
-
+        SELECT dept, pos, SUM(sal)
+        FROM emp
+		GROUP BY CUBE(dept, pos)
+		ORDER BY dept, pos;
+    
+        SELECT city, dept, pos, SUM(sal)
+        FROM emp
+		GROUP BY CUBE(city, dept, pos)
+		ORDER BY city, dept, pos;
+    
+        SELECT city, dept, pos, SUM(sal)
+        FROM emp
+		GROUP BY city, CUBE(dept, pos)
+		ORDER BY city, dept, pos;
+    
 -- ※ GROUPING 함수와 GROUP_ID 함수
 --    ο GROUPING 함수
+        select dept, pos, GROUPING(dept), GROUPING(pos), sum(sal)
+        from emp
+        group by ROLLUP(dept, pos);
+        
+        select dept, pos, sum(sal)
+        from emp
+        group by ROLLUP(dept, pos)
+        having GROUPING(pos)=1; 
+    
+        select dept, pos, GROUPING(dept), GROUPING(pos), sum(sal)
+        from emp
+        group by CUBE(dept, pos)
+        order by dept, pos; 
 
+        select empNo, name, sum(sal)
+        from emp
+        group by empNo, name;
 
+        select dept, empNo, name, sum(sal)
+        from emp
+        group by ROLLUP(dept,(empNo, name)); -- (empNo, name)은 ROLLUP 안에 괄호로 묶였다.
+        -- ROLLUP에 묶인 괄호를 하나의 개체로 간주하고 ROLLUP 연산을 수행한다.
+        
 --    ο GROUP_ID 함수
 
+        -- 다음의 내용 먼저 점검하고 학습
+        -- #1
+        -- group by rollup(dept, empno)와
+        -- group by dept, rollup(dept, empno)의 차이를 설명
+        -- #2 select dept, empno, name from emp group by rollup(dept,(empno,name));
+        -- 위의 SQL문에서 (empno, name)의 의미를 설명
+        
+        select dept, empno,  sum(sal) from emp group by rollup(dept, empno) --전체 총 연봉 하나를 더 구한다.
+        MINUS
+        select dept, empno,  sum(sal) from emp group by dept, rollup(dept, empno)
+        order by dept, empno;
+        
+        select dept, empno, name, GROUP_ID() ,sum(sal) from emp group by dept, rollup(dept, (empno, name))
+        order by dept, empno;
 
--- ※ GROUPING SETS
+
+        --Group by에서 복제된 횟수를 GROUP_ID 함수로반환해주는 것이다.
+        select dept, empNo, name, GROUP_ID(), sum(sal)
+        from emp
+        group by dept, ROLLUP(dept,(empNo, name))
+        order by dept, empNo;
+
+        --복제된 여부(1)를 활용하여 합계와 평균을 동시에 구해서 출력할 수도 있다.
+        select dept, empNo, GROUP_ID(), 
+            decode(GROUP_ID(),0,NVL(name,'합계'),'평균') name,
+            decode(GROUP_ID(),0,sum(sal), ROUND(AVG(sal))) sal
+        from emp
+        group by dept, ROLLUP(dept,(empNo, name))
+        order by dept, GROUP_ID(), empNo;
+
+        SELECT dept, empNo, GROUP_ID(),
+           DECODE(GROUP_ID(), 0, NVL(name, '합계'), '평균') name,
+           DECODE(GROUP_ID(), 0, SUM(sal), ROUND(AVG(sal))) sal
+        FROM emp
+        GROUP BY dept, ROLLUP(dept, (empNo, name))
+        ORDER BY dept, GROUP_ID(), empNo;
+
+-- ※ GROUPING SETS (UNION ALL과 비슷하다)
+    -- 하나로 결합할 때 사용하는 것이 GROUPING SETS이다.
+    
+    --GROUPING SET 적용 전
+    select dept, pos, null, round(AVG(sal)) 평균 from emp GROUP BY dept, pos -- 부서별 직위별 평균
+    UNION ALL
+    select null , pos, city, round(AVG(sal)) 평균 from emp GROUP BY pos, city; -- 직위별 도시별 평균
+    
+    --GROUPING SET 적용 후
+    select dept, pos, city, round(AVG(sal)) 평균 from emp 
+    GROUP BY GROUPING SETS ((dept, pos), (pos,city));
+    
 
