@@ -147,4 +147,10 @@ SELECT dept, SUM(부장) 부장, SUM(과장) 과장, SUM(대리) 대리, SUM(사원) 사원  FRO
 ) GROUP BY ROLLUP((dept, 부장, 과장, 대리, 사원))
 ORDER BY dept;
 
-
+SELECT dept,
+   COUNT(DECODE(pos, '부장', 1)) 부장,
+   COUNT(DECODE(pos, '과장', 1)) 과장,
+   COUNT(DECODE(pos, '대리', 1)) 대리,
+   COUNT(DECODE(pos, '사원', 1)) 사원
+FROM emp
+GROUP BY ROLLUP(dept, pos) HAVING GROUPING(pos)=1;
