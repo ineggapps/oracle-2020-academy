@@ -131,3 +131,125 @@ select power(2,-3) from dual; -- 2의 -3제곱
 --NEXT_DAY: 주어진 날짜를 기준으로 돌아오는 날짜 출력
 --LAST-DAY:주어진 날짜가 속한 달의 마지막 날짜 출력
 
+--3.1 SYSDATE 현재 시스템의 시간
+select SYSDATE from dual;
+
+--3.2 MONTHS_BETWEEN 두 날짜 사이의 개월 수의 차이
+--MONTHS_BETWEEN(A, B) 이면 A-B 연산을 수행한다. (소숫점까지 반환해 준다)
+select MONTHS_BETWEEN('20/03/12', '20/07/20') from dual;
+
+--3.3 ADD_MONTHS(날짜, 개월 수)
+select ADD_MONTHS('20/03/12', 4) from dual;
+
+--3.4 NEXT_DAY(기준날짜,요일)
+--select SYSDATE, NEXT_DAY(sysdate,'MON') from dual;--리눅스 운영체제에서...
+select SYSDATE, NEXT_DAY(sysdate,1) from dual; --모든 운영체제 모든 시스템
+--주의사항
+--오늘이 3/12 목요일인데 NEXT_DAY(SYSDATE,5)을 지정하면 다음 주 목요일을 반환해 준다.
+select NEXT_DAY('20/03/12',5) from dual;
+
+--3.5 LAST_DAY(날짜)
+select SYSDATE, LAST_DAY(SYSDATE), LAST_DAY('20/03/12') from dual;
+
+--3.6 ROUND(), TRUNC() 날짜에서 쓰이는 함수
+select SYSDATE, ROUND(SYSDATE, 'DAY'), TRUNC(SYSDATE, 'DAY') from dual;
+
+--4. 형변환 함수
+
+--4.1 명시적 / 묵시적 형변환
+select 2 + TO_NUMBER(2) from dual; --명시적
+select '2' + 2 from dual; --묵시적 '2'가 숫자 2로 변환될 것이다.
+
+--4.2 TO_CHAR (날짜에서 문자로)
+--YYYY
+--RRRR
+--YY
+--YEAR (영문 이름 전체 연도로 표시)
+select TO_CHAR(SYSDATE, 'YEAR') from dual; --TWENTY TWENTY
+-- MM 월을 숫자 2자리로
+-- MON 영어 3글자
+-- MONTH 월을 뜻하는 이름 전체 표시
+select TO_CHAR(SYSDATE,'MM'), TO_CHAR(SYSDATE,'MON'), TO_CHAR(SYSDATE,'MONTH') from dual; -- 03, 3월, 3월
+--DD 일을 숫자 2자리로
+--DAY 요일에 해당하는 명칭
+--DDTH 몇 번째 날인지 표시
+select TO_CHAR(SYSDATE,'DDTH') from dual; -- 3월 12일 기준으로 12TH
+--HH24 24시간 표기법
+--HH 12시간 표기법
+--MI 분
+--SS 초
+
+--QUIZ1.
+--Student 테이블에서 birthday 컬럼을 사용하여 생일이 1월인 학생과birthday를 형식에 맞게 출력?
+select studno, name, TO_CHAR(birthday,'YY/MM/DD') from student;
+
+--QUIZ2.
+--emp테이블의 hiredate컬럼을 사용하여 입사일이 1,2,3월인 사람들의 사번과 이름, 입사일 출력
+select empno, ename, hiredate from emp 
+where TO_CHAR(hiredate,'MM') in ('01','02','03');
+
+--4.3 TO_CHAR 함수(숫자형에서 문자형으로 변환하기)
+select empno, ename, sal, comm, TO_CHAR((sal*12)+comm,'999,999') salary from emp
+where ename='ALLEN';
+
+--4.4 TO_NUMBER 함수 (숫자 처럼 생긴 문자를 숫자로 바꾸기)
+select TO_NUMBER('5') from dual;
+
+--4.5 TO_DATE()
+select TO_DATE('2014/05/31') from dual;
+
+--5. 일반함수
+--5.1 NVL(대상, 치환값)
+--NULL값이 아니면 대상 값 그대로를 반환하고, NULL이면 치환값으로 지정한 것으로 대체하여 반환한다.
+select ename, comm, NVL(comm,0), NVL(comm,100) from emp;
+
+--5.2 NVL2(대상, null이아닌경우, null인 경우)
+select empno, ename, sal, comm, NVL2(comm, sal+comm, sal*0) "NVL2" from emp;
+
+--5.3 DECODE(조건,값,TRUE인경우,FALSE인경우)
+
+SELECT deptno, name, DECODE(deptno, 101, 'Computer Engineering') "DNAME" from professor;
+--101번이 아닌 교수들은 null값이 반환된다.
+
+SELECT deptno, name, DECODE(deptno, 101, 'Computer Engineering', 'ETC') "DNAME" from professor;
+--101번이 아닌 교수들은 ETC값이 반환된다
+
+SELECT deptno, name, 
+DECODE( deptno, 101, '컴공과', 102, '멀미과', 103, '소디과', '기타') from professor;
+--101번 => 컴공과
+--102번 => 멀미과
+--103번 => 소디과
+--다른 학과번호 => 기타
+
+--DECODE QUIZ1.
+--Student 테이블을 사용하여 제1전공(deptno1)이 101번인 학과 학생들의 이름과 주민번호, 성별을 출력하되
+-- 성별은 주민번호 컬럼을 이용하여 7번째 숫자가 1일 경우 MAN 2일 경우에는 WOMAN을 출력
+select name, jumin, DECODE(substr(jumin,7,1),1,'MAN',2,'WOMAN') gender from student;
+
+--DECODE QUIZ2.
+--Student 테이블에서 전공이(deptno1) 101번인 학생들의 이름, 연락처, 지역을 출력
+--단 지역번호 02는 서울, 031은 경기도, 051은 부산, 052는 울산, 055는 경남으로 출력
+
+select name, tel, 
+DECODE(substr(tel,1,INSTR(tel,')')-1),
+'02','서울',
+'031','경기도',
+'051','부산',
+'052','울산',
+'055','경남','기타') loc from student;
+
+--5.4 CASE문
+select name, tel,
+CASE substr(tel,1,INSTR(tel,')')-1)
+WHEN '02' THEN '서울'
+
+
+
+WHEN '031' THEN '경기도'
+WHEN '051' THEN '부산'
+WHEN '052' THEN '울산'
+WHEN '055' THEN '경남'
+ELSE '기타' 
+END loc from student;
+
+--6. 정규식....( 아직 안 배움)
