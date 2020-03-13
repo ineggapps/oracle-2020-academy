@@ -320,13 +320,76 @@
 --              { UNBOUNDED FOLLOWING | CURRENT ROW | value_expr { PRECEDING | FOLLOWING } }
 --         | { UNBOUNDED PRECEDING | CURRENT ROW | value_expr PRECEDING }
 --        }
+
 --
---
---    ο FIRST_VALUE() OVER()
---
+--    ο FIRST_VALUE() OVER
+--      윈도우에서 정렬된 값 중에서 첫 번째 값을 반환하는 함수
+        SELECT name, dept, sal,
+        FIRST_VALUE(sal) OVER(PARTITION BY dept ORDER BY sal DESC) from emp;
+        --MAX() VALUE()와 유사한 효과를 낸다
+        
+        SELECT name, sal,
+        FIRST_VALUE(sal) OVER(ORDER BY sal DESC) - sal 차이
+        from emp;
+        
 --
 --    ο LAST_VALUE() OVER() 함수
 --       - 예
 --         -- LAST_VALUE 함수는 윈도우절을 지정하지 않으면 디폴트로
 --            RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW 가 적용되어
 --            끝값으로 고정되어 있지 않으므로 예기치 않는 결과가 출력 되므로 반드시 윈도우절을 지정해야 한다.
+
+        SELECT name, dept, sal,
+        LAST_VALUE(sal) OVER(PARTITION BY dept ORDER BY sal DESC) from emp;
+        --MIN() VALUE()와 유사한 효과를 낸다.
+        
+        --작은 것에서 큰 순
+        SELECT name, dept, sal, LAST_VALUE(sal) OVER(ORDER BY sal) from emp 오름차순급여;
+        --값을 누적하면서 오름차순으로 정렬된 데이터 중 가장 마지막 값이 출력된다. 
+        
+        --DB에 등록된 마지막 값 가져오기
+        SELECT name, dept, sal,
+        LAST_VALUE(sal) OVER() from emp; --BUT 항상 똑같은 순서를 보장받을 수는 없다.
+        --오라클 버전에 따라 값이 다르게 출력될 수 있다.
+        --정렬하는 방식이 버전별로 알고리즘에 차이가 있을 수 있기 때문이다.
+        --따라서 정렬을 보장 받고 싶으면 order by 구문으로 정렬을 수행한다.
+        
+        --정렬된 값 중 가장 큰 값이 출력된다
+        -- ∵ ORDER BY로 인해 오름차순으로 정렬되어 마지막 값은 가장 큰 값이 된다.
+        --따라서 정렬된 값 중 가장 마지막 값을 가져오게 된다.
+        SELECT name, dept, sal,
+        LAST_VALUE(sal) OVER() from emp
+        ORDER BY sal; 
+        
+        --OVER 안의 ORDER BY는 단위별 정렬된 대상을 기준으로 값을 누적시켜가면서 마지막 값을 비교한다.
+        --따라서 금액이 달라질 때마다 단위별 정렬된 대상 중 마지막 값이 출력된다. 
+        SELECT name, dept, sal,
+        LAST_VALUE(sal) OVER(ORDER BY sal) from emp
+        ORDER BY sal; 
+        
+        --위의 쿼리문 결과와 똑같다.
+        SELECT name, dept, sal,
+        LAST_VALUE(sal) 
+        OVER(ORDER BY sal 
+        --UNBOUNDED PRECEDING: 첫 번째 로우가 시작 지정으로 고정
+        --범위를 첫 번째 로우부터 현재 로우까지로 지정하여 비교
+        --따라서 값이 계속 달라지겠지?
+        RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW--기본 옵션이라서 생략하여도 된다.
+        ) 결과
+        from emp
+        ORDER BY sal; 
+   
+        --가장 큰 값
+        SELECT name, dept, sal,
+        LAST_VALUE(sal) 
+        OVER(ORDER BY sal 
+        --UNBOUNDED FOLLOWING: 시작 지점이 마지막 지점으로 고정
+        --범위를 첫 번째 로우부터 끝 번째 로우로 지정하였음. 그러므로 LAST_VALUE에 의해서 마지막 로우의 값이 계속 나오겠지?
+        RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) 결과
+        from emp
+        ORDER BY sal; 
+        
+        
+        
+        
+        
