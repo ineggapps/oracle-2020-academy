@@ -212,6 +212,7 @@
 -- ※ UPDATE
 --   ο UPDATE 
 --  기존 레코드 수정
+--  실제로는 해당 레코드를 지우고 다시 삽입하는 과정을 수행하는 것이다. (그러므로 DML연산 중 가장 느리다고 할 수 있다.)
 --     -------------------------------------------------------
     UPDATE 테이블명 SET 컬럼명1=값1, 컬럼명2=값2 WHERE 조건;
     --CAUTION: WHERE절이 없으면 모두 수정된다.
@@ -233,6 +234,7 @@
     SELECT * FROM emp_score WHERE empno=1002; --수정된 것을 확인할 수 있다.
     COMMIT; --DB에 반영
     
+--  복습을 위한 예제
 --  예제1) emp_score: empno, com, excel, word, tot, ave, grade
 --  tot: com+excel+word
 --  ave: (com+excel+word)/3 (단, 소숫점은 2째 자리에서 반올림)
@@ -246,23 +248,141 @@
         round((com+excel+word)/3,2) ave,
         CASE 
             WHEN (com+excel+word)/3 >= 60 AND (com>=40 AND excel >=40 AND word >=40) THEN '합격'
-            WHEN com<40 OR excel <40 OR word <40 THEN '과락'
---            WHEN (com+excel+word)/3 <60 THEN '불합격'
-            ELSE '불합격'
+            WHEN (com+excel+word)/3 <60 THEN '불합격'
+            ELSE '과락'
         END grade
-    from emp_score;
+    FROM emp_score;
 
+--  서브쿼리를 이용한 수정
+    SELECT empno FROM emp WHERE dept='개발부';
+    SELECT * FROM emp_score WHERE empno IN (SELECT empno FROM emp WHERE dept='개발부');
 
---
---
+    --개발부 소속 직원들만 엑셀 점수를 100점 가산하기.
+    UPDATE emp_score SET excel=excel+100 WHERE empno IN (SELECT empno FROM emp WHERE dept='개발부');
+    SELECT * FROM emp_score;
+    ROLLBACK; --연산을 DB에 반영하지 않음.
+    
+    UPDATE emp_score SET com=(SELECT 100 FROM dual) WHERE empNo = '1001'; --수정할 대상의 컬럼이 1개이므로 com=(SELECT문) 에서 SELECT문의 결괏값은 행이 1개여야 한다.
+    SELECT * FROM emp_score WHERE empno = '1001';
+    
+    UPDATE emp_score SET (excel, word)=(SELECT 100, 100 FROM dual) WHERE empno='1001'; -- SET에서 지정한 컬럼의 개수만큼 SELECT문의 결과도 컬럼의 개수가 같아야 한다.
+    SELECT * FROM emp_score WHERE empno = '1001';
+    
+    --제약조건에 위배되는 경우(EX: NOT NULL컬럼인데 NULL로 설정하는 경우 등)에는 수정할 수 없다.
+    --따라서 반드시 수정되는 것은 아님.
+    --제약조건을 위반한 예)
+    SELECT * FROM emp_score;
+    DESC emp_score;
+--  empno: 기본키이면서 emp테이블의 참조키이다. PRIMARY KEY, FOREIGN KEY
+    UPDATE emp_score SET empno='1002' WHERE empno='1001'; --오류ORA-00001: 무결성 제약조건에 위배됩니다. 
+    --empno가 1002인 데이터가 이미 존재하므로 기본키를 가진 컬럼은 중복을 허용하지 않는다.
+    UPDATE emp_score SET empno='9999' WHERE empno='1001'; --오류ORA-02291: 무결성 제약조건(SKY.FK_EMP_SCORE_NO)이 위배되었습니다. - 부모 키가 없습니다.
+    --emp_scores의 empno는 emp의 empno를 참조키로 emp테이블에 없는 값으로는 수정이 불가능하다.
+       
 -- ※ DELETE
 --   ο DELETE
---     -------------------------------------------------------
---     --
---
---
+---------------------------------------------------------
+    -- 불필요한 레코드의 삭제
+    -- UPDATE와 마찬가지로 WHERE조건절을 지정하지 않으면 테이블 안에 있는 모든 레코드가 일괄적으로 삭제된다.
+    -- COMMIT 또는 ROLLBACK이 필요하지만 자바 등 외부에서 삭제 시 자동으로 COMMIT되는 것에 주의한다.
+    DELETE [FROM] 테이블명 [WHERE 조건];
+    --오라클에서는 DELETE 테이블명도 가능하지만, 타 DB에서는 DELETE FROM으로 선언해야 한다.
+
+    CREATE TABLE emp1 AS SELECT * FROM emp;
+    CREATE TABLE emp_score1 AS SELECT * FROM emp_score;
+  
+    SELECT * FROM emp1;
+    SELECT * FROM emp_score1;
+
+    --영업부 사원의 행만 삭제하는 방법
+    SELECT * FROM emp1;
+    DELETE FROM emp1 WHERE dept='영업부';
+    SELECT * FROM emp1;
+    COMMIT;
+    
+    --서브쿼리를 이용하여 삭제하는 방법
+    DELETE FROM emp_score1 WHERE empNo IN(SELECT empno FROM emp1 WHERE dept='개발부');
+    SELECT * FROM emp_score1;
+    COMMIT;
+    
+    DELETE FROM emp1; --모두 삭제하는 방법. 구조는 삭제되지 않음.
+    DELETE FROM emp_score1;
+    COMMIT;
+    
+    DESC emp1;
+    DESC emp_score1;
+  
+    DROP TABLE emp1 PURGE;
+    DROP TABLE emp_score1 PURGE;
+    
+    SELECT * FROM TAB;
+    
+    --테이블 백업
+    CREATE TABLE EMP_BACKUP AS SELECT * FROM EMP;
+    
+    --실수로 삭제한 경우... 어떻게 하는지?
+    DELETE FROM emp WHERE city='서울';--ORA-02292: 무결성 제약조건(SKY.FK_EMP_SCORE_NO)에 위배되었습니다. - 자식 레코드가 발견되었습니다.
+    DELETE FROM emp_score;
+    DELETE FROM emp WHERE city='서울';--ORA-02292: 무결성 제약조건(SKY.FK_EMP_SCORE_NO)에 위배되었습니다. - 자식 레코드가 발견되었습니다.
+    
+    SELECT * FROM emp;
+    COMMIT;
+    SELECT * FROM emp WHERE city='서울';
+
+    --실수로 삭제한 경우 
+    --10분 전의 emp테이블을 확인한다
+    SELECT * FROM emp;--현재의 행
+    SELECT * FROM emp AS OF TIMESTAMP (SYSTIMESTAMP-INTERVAL '10' MINUTE);
+    
+    --10분의 emp테이블로 복원
+    INSERT INTO emp (
+        SELECT * FROM emp AS OF TIMESTAMP (SYSTIMESTAMP-INTERVAL '10' MINUTE)
+        where city='서울'
+    );
+    COMMIT;
+    SELECT * FROM emp;
+    
+    --10분의 emp_score 테이블로 복원
+    SELECT * FROM emp_score; --다 지워버렸으므로... 조건 없이 그냥 실행한다
+    SELECT * FROM emp_score AS OF TIMESTAMP (SYSTIMESTAMP-INTERVAL '10' MINUTE);
+    INSERT INTO emp_score(
+        SELECT * FROM emp_score AS OF TIMESTAMP (SYSTIMESTAMP-INTERVAL '10' MINUTE)
+    );
+    COMMIT;
+    SELECT * FROM emp_score;
+    
+    SELECT * FROM EMP ORDER BY EMPNO;
+    --만약에 DB작업이 꼬인 경우에는 웹서버를 중지하여 데이터의 변경을 방지하고, 빠른 시간 내에 복구를 시도한다.
+    
 -- ※ MERGE
 --   ο MERGE
---     -------------------------------------------------------
---     --
---
+--  테이블을 병합하는 것
+--  조건을 만족하면 기존에 존재하는 값을 수정할 수 있고,
+--  조건을 만족하지 않으면 기존에 존재하는 값에다가 새로운 값을 추가하는 것이다.
+--  merge문을 사용하면, 여러 개의 insert, update 및 delete dml문을 피할 수 있지만 보통은 따로 작성한다.
+--  보통 테이블을 병합할 때 값이 존재하면 수정하고 값이 존재하지 않으면 새로운 값을 삽입할 목적으로 사용된다.
+---------------------------------------------------------
+
+    CREATE TABLE emp1 AS 
+    SELECT empno, name, city, dept, pos, sal FROM emp
+    WHERE city='인천';
+    
+    CREATE TABLE emp2 AS 
+    SELECT empno, name, city, dept, pos, sal FROM emp
+    WHERE dept='개발부';
+
+    MERGE INTO emp1 e1 --출신지가 인천인 직원
+                USING emp2 e2 --부서 소속이 개발부인 직원
+                --테이블에 똑같은 컬럼이 존재하므로 어떤 테이블의 컬럼인지를 명시해야 한다.
+                --ON(e1의 empno와 e2의 empno가 같은 것이 있으면) == 개발부이면서 출신지가 인천인 직원이라면?
+                ON (e1.empno = e2.empno)
+                WHEN MATCHED THEN --ON의 조건과 일치하면
+                        UPDATE SET e1.sal = e1.sal + e2.sal --원 급여의 1배수를 더한다.
+                WHEN NOT MATCHED THEN --ON의 조건과 일치하지 않으면 (USING테이블에만 있는 직원이면)
+                        INSERT (e1.empno, e1.name, e1.city, e1.dept, e1.pos, e1.sal) --emp1의 컬럼을 지정하고
+                        VALUES (e2.empno, e2.name, e2.city, e2.dept, e2.pos, e2.sal);  --emp2의 값을 emp1테이블에 삽입한다.
+            
+    SELECT * FROM emp1;
+    COMMIT;
+    
+    
