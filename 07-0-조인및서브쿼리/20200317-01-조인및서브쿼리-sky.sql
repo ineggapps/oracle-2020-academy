@@ -585,16 +585,7 @@ select * from tab;
 --        AND m.cnum IS NULL
 --        ORDER BY c.cnum;
         
-        --참고
-        book: bCode, bName, bPrice, pNum
-        pub: pNum, pName
-    --------------
-        sale: sNum, sDate, cNum -- cNum 고객번호: 누가 사 갔는지 추적
-        dsale: dNum, sNum, bCode, qty --sNum을 이용하여 sale과 dSale의 관계를 맺을 수 있다.
-    --------------
-        cus: cNum, cName, cTel
-        member:cnum, userid, userPwd, userEmail
-        
+      
         SELECT c.cnum, cname, d.bcode, bname, sdate, bprice, qty
         FROM cus c
         LEFT OUTER JOIN member m ON c.cnum = m.cnum
@@ -660,6 +651,78 @@ select * from tab;
         ) 
         WHERE 순위=1
         ORDER BY 연도; --판매실적이 없으면 연도가 NULL로 나온다.
+        
+        
+        --문제5) 연도별 월별 서적 판매수량의 합 구하기
+        --연도 오름차순, 책코드 오름차순
+        --연도 책코드 책이름 
+        
+        --1단계) 판매일별 서적 판매내역 확인
+        SELECT sdate, b.bcode, bname
+        FROM book b
+        JOIN dsale d ON b.bcode = d.bcode
+        JOIN sale s ON d.snum = s.snum
+        ORDER BY sdate, b.bcode;
+        
+        --2단계) 판매년별 서적 판매수량의 합 구하기
+        SELECT TO_CHAR(sdate,'YYYY') 연도, b.bcode, bname, sum(qty) "총 판매수량"
+        FROM book b
+        JOIN dsale d ON b.bcode = d.bcode
+        JOIN sale s ON d.snum = s.snum
+        GROUP BY TO_CHAR(sdate,'YYYY'), b.bcode, bname
+        ORDER BY 연도, b.bcode;
+        
+        --3단계) 판매년도, 판매월별 판매수량의 합 구하기
+        SELECT TO_CHAR(sdate,'YYYY') 연도, TO_CHAR(sdate,'MM') 월, b.bcode, bname, sum(qty) 판매수량
+        FROM book b
+        JOIN dsale d ON b.bcode = d.bcode
+        JOIN sale s ON d.snum = s.snum
+--        where b.bcode='0021'
+        GROUP BY TO_CHAR(sdate,'YYYY'), TO_CHAR(sdate,'MM'), b.bcode, bname
+        ORDER BY 연도, b.bcode;
+        
+        
+        --최종) 판매년도, 1월, 2월 ..., 판매수량 합 구하기
+        SELECT 
+            TO_CHAR(sdate,'YYYY') 연도,
+            b.bcode, bname,
+            sum(DECODE(TO_CHAR(sdate,'MM'),'01',qty,0)) "1월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'02',qty,0)) "2월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'03',qty,0)) "3월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'04',qty,0)) "4월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'05',qty,0)) "5월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'06',qty,0)) "6월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'07',qty,0)) "7월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'08',qty,0)) "8월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'09',qty,0)) "9월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'10',qty,0)) "10월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'11',qty,0)) "11월", 
+            sum(DECODE(TO_CHAR(sdate,'MM'),'12',qty,0)) "12월", 
+            sum(qty) 총
+        FROM book b
+        JOIN dsale d ON b.bcode = d.bcode
+        JOIN sale s ON d.snum = s.snum
+        GROUP BY 
+            TO_CHAR(sdate,'YYYY'), b.bcode, bname
+        ORDER BY 연도, b.bcode;
+        
+        
+        --검산SQL
+        select bcode, d.snum, qty 수량, sdate 날짜
+        from dsale d
+        join sale s on d.snum = s.snum
+        WHERE bcode='0021';
+        
+        --참고
+        book: bCode, bName, bPrice, pNum
+        pub: pNum, pName
+    --------------
+        sale: sNum, sDate, cNum -- cNum 고객번호: 누가 사 갔는지 추적
+        dsale: dNum, sNum, bCode, qty --sNum을 이용하여 sale과 dSale의 관계를 맺을 수 있다.
+    --------------
+        cus: cNum, cName, cTel
+        member:cnum, userid, userPwd, userEmail
+        
         
    ο UPDATE JOIN VIEW 이용하여 빠른 업데이트(서브쿼리 보다 훨씬 빠르다.)
       - 테이블을 조인하여 UPDATE
