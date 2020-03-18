@@ -334,19 +334,7 @@ select * from tab;
         FROM book b
         JOIN dsale d ON b.bcode = d.bcode
         GROUP BY b.bcode, bname
-        HAVING sum(qty) >= 80;
-        
-    --참고
-        book: bCode, bName, bPrice, pNum
-        pub: pNum, pName
-    --------------
-        sale: sNum, sDate, cNum -- cNum 고객번호: 누가 사 갔는지 추적
-        dsale: dNum, sNum, bCode, qty --sNum을 이용하여 sale과 dSale의 관계를 맺을 수 있다.
-    --------------
-        cus: cNum, cName, cTel
-        member:cnum, userid, userPwd, userEmail
-    
-    
+        HAVING sum(qty) >= 80;  
 
      2) NATURAL JOIN
         -- 형식
@@ -410,6 +398,18 @@ select * from tab;
             FROM author a1
             JOIN author a2 ON a1.bCode=a2.bCode AND a1.aName > a2.aName
         );
+        
+        --EQUI JOIN
+        SELECT s.snum, bCode, cNum, sDate, qty
+        FROM sale s
+        JOIN dsale d ON s.sNum = d.sNum;
+        
+        --NON-EQUI JOIN
+        --'='이 아닌 비교연산자
+        SELECT s.snum, bCode, cNum, sDate, qty
+        FROM sale s
+        JOIN dsale d ON s.sNum > 10;
+        
 
         -------------------------------------------------------
         --
@@ -422,12 +422,94 @@ select * from tab;
            FROM 테이블명1, 테이블명2
            WHERE 테이블명1.컬럼명=테이블명2.컬럼명(+);
 
+        --book(bcode, bname)
+        --dsale(bcode ,snum, qty)
+        
+        --EQUI JOIN
+        SELECT b.bcode, bname, qty
+        FROM book b, dsale d
+        WHERE b.bcode = d.bcode
+        ORDER BY b.bcode;
+        
+        --LEFT OUTER JOIN
+        SELECT b.bcode, bname, qty
+        FROM book b, dsale d
+        WHERE b.bcode = d.bcode(+) --판매되지 않은 책들도 null로 붙여 출력
+        ORDER BY b.bcode;
+    
+        
        -- 형식2
           SELECT [테이블명1.]컬럼명, [테이블명2.]컬럼명
           FROM 테이블명1
           LEFT OUTER JOIN 테이블명2 ON 테이블명1.컬럼명=테이블명2.컬럼명;
 
-        -------------------------------------------------------
+        --LEFT OUTER JOIN
+        SELECT b.bcode, bname, qty
+        FROM book b
+        LEFT OUTER JOIN dsale d ON b.bcode = d.bcode
+        ORDER BY b.bcode;
+    
+        --문제1)
+        --bcode, bname, snum, sdate, qty 출력
+        --단, bocde와 bname은 한 권도 판매가 되지 않은 책도 출력한다.
+        
+        --LEFT와 RIGHT 방향성이 살아있는 JOIN문이므로 테이블의 선언이 중요하다.
+        --왼쪽에는 부모 테이블, 오른쪽에는 자식 테이블이 있어야 한다.
+        --순서가 뒤바뀐 경우에는 결괏값이 달라질 수 있음에 유의한다.
+        SELECT b.bcode, bname, d.snum, sdate, qty
+        FROM book b
+        LEFT OUTER JOIN dsale d ON b.bcode = d.bcode
+        LEFT OUTER JOIN sale s ON d.snum = s.snum
+        ORDER BY snum nulls first, b.bcode;
+        
+        --문제2) 판매된 책코드, 책이름만 출력
+        
+        
+        --JOIN없이
+        SELECT bcode, bname
+        FROM book
+        WHERE bcode IN (
+            SELECT DISTINCT bcode FROM dsale
+        )
+        ORDER BY bcode;
+        
+        --판매된 경우
+        SELECT b.bcode, bname, d.bcode, d.snum
+        FROM book b
+        LEFT OUTER JOIN dsale d ON d.bcode = b.bcode
+--        WHERE d.bCode IS NOT NULL
+        WHERE dnum IS NOT NULL
+        ORDER BY b.bcode;
+        
+        ---한 권도 판매되지 않은 경우
+        SELECT b.bcode, bname, d.bcode, d.snum
+        FROM book b
+        LEFT OUTER JOIN dsale d ON d.bcode = b.bcode
+        WHERE d.bCode IS NULL --판매되지 않은 책만 조회하는 경우
+        ORDER BY b.bcode;
+        
+        --문제3) 올해 판매된 책 코드, 책 이름
+    
+        --JOIN 사용하지 않고
+        SELECT bcode, bname
+        FROM book
+        WHERE bcode IN (
+            SELECT DISTINCT bcode
+            FROM dsale d--, sale s
+--            WHERE d.snum = s.snum
+            JOIN sale s ON d.snum = s.snum
+            WHERE TO_CHAR(sdate,'YYYY')=TO_CHAR(SYSDATE,'YYYY')
+        )
+        ORDER BY BCODE;
+    
+        --JOIN 사용(판매된 거니까 테이블을 붙여도 null값이 없겠지)
+        SELECT DISTINCT b.bcode, bname
+        FROM book b
+        JOIN dsale d ON b.bcode = d.bcode
+        JOIN sale s ON d.snum = s.snum
+        WHERE TO_CHAR(sdate,'YYYY')=TO_CHAR(SYSDATE,'YYYY')
+        ORDER BY BCODE;
+    
         --
 
 
@@ -437,24 +519,148 @@ select * from tab;
            FROM 테이블명1, 테이블명2
            WHERE 테이블명1.컬럼명(+)=테이블명2.컬럼명;
 
+        --EQUI JOIN
+        SELECT b.bcode, bname, qty
+        FROM book b, dsale d
+        WHERE b.bcode = d.bcode
+        ORDER BY b.bcode;
+        
+        --RIGHT OUTER JOIN
+        SELECT b.bcode, bname, qty
+        FROM dsale d, book b
+        WHERE d.bcode(+) = b.bcode --판매되지 않은 책들도 null로 붙여 출력
+        ORDER BY b.bcode;
+
+        --LEFT OUTER JOIN
+        SELECT b.bcode, bname, qty
+        FROM dsale d
+        RIGHT OUTER JOIN book b ON d.bcode = b.bcode
+        ORDER BY b.bcode;
+
        -- 형식2
           SELECT [테이블명1.]컬럼명, [테이블명2.]컬럼명
           FROM 테이블명1
           RIGHT OUTER JOIN 테이블명2 ON 테이블명1.컬럼명=테이블명2.컬럼명;
-
-        -------------------------------------------------------
-        --
-
 
      3) FULL OUTER JOIN
        -- 형식
           SELECT [테이블명1.]컬럼명, [테이블명2.]컬럼명
           FROM 테이블명1 FULL OUTER JOIN 테이블명2 ON 테이블명1.컬럼명=테이블명2.컬럼명;
 
-        -------------------------------------------------------
-        --
 
+        --판매 내용을 기준으로 회원정보를 조회 
+        --따라서 고객이지만 회원이 아닌 경우 null로 표시된다.
+        SELECT snum, sdate, s.cnum, m.cnum, userid
+        FROM sale s
+        LEFT OUTER JOIN member m ON s.cnum = m.cnum
+        ORDER BY snum;
+        
+        
+        --회원 목록을 기준으로 판매정보를 조회
+        --따라서 회원이지만 판매 이력이 없는 경우 NULL로 표시된다
+        SELECT snum, sdate, s.cnum, m.cnum, userid
+        FROM sale s
+        RIGHT OUTER JOIN member m ON s.cnum = m.cnum
+        ORDER BY snum;
+        
+        --판매 내용과 회원 목록을 기준으로 각각 회원 정보, 판매 정보를 조회
+        --각각 회원 정보나 판매 정보가 없는 경우 NULL로 표시된다.
+        --FROM을 포함한 JOIN을 언급한 순서에 따라 결과가 달라질 수 있다.
+        SELECT snum, sdate, s.cnum, m.cnum, cname, userid
+        FROM sale s
+        FULL OUTER JOIN member m ON s.cnum = m.cnum
+        FULL OUTER JOIN cus c ON c.cnum = s.cnum
+        ORDER BY cname nulls first, snum;
+        
+              
+        --문제1) 비회원 판매 현황
+        --cnum, cname, bCode, bName, sDate, bPrice, qty
+        --2, 5, 9, 12 ,14가 비회원임!!!
+--        SELECT userid, c.cnum, cname, d.bcode , bname, sdate, bprice, qty
+--        FROM dsale d
+--        JOIN book b ON d.bcode = b.bcode
+--        JOIN sale s ON d.snum = s.snum
+--        JOIN cus c ON s.cnum = c.cnum
+--        LEFT OUTER JOIN member m ON c.cnum = m.cnum
+--        AND m.cnum IS NULL
+--        ORDER BY c.cnum;
+        
+        --참고
+        book: bCode, bName, bPrice, pNum
+        pub: pNum, pName
+    --------------
+        sale: sNum, sDate, cNum -- cNum 고객번호: 누가 사 갔는지 추적
+        dsale: dNum, sNum, bCode, qty --sNum을 이용하여 sale과 dSale의 관계를 맺을 수 있다.
+    --------------
+        cus: cNum, cName, cTel
+        member:cnum, userid, userPwd, userEmail
+        
+        SELECT c.cnum, cname, d.bcode, bname, sdate, bprice, qty
+        FROM cus c
+        LEFT OUTER JOIN member m ON c.cnum = m.cnum
+        JOIN sale s ON c.cnum = s.cnum
+        JOIN dsale d ON s.snum = d.snum
+        JOIN book b ON d.bcode = b.bcode
+        WHERE m.cnum IS NULL -- 또는 userid IS NULL
+        ORDER BY c.cnum;
+        
+        
+        select * from cus;
+        
+        --문제2) 고객별 누적 판매 금액
+        --cNum, cName, bPrice*qty 합
+        --단, 고객 중 책을 한 권도 구매하지 않은 고객도 출력
+        --TIP: JAVA에서는 null값을 int형인 0값으로 받지 못한다. 따라서 nvl함수를 이용하여 null값을 다른 값으로 치환해주어야 한다.
+        SELECT c.cnum, cname, TO_CHAR(nvl(sum(bprice*qty),0),'L999,999,999') 합
+        --판매이력이 없는 11번과 15번은 판매이력이 없으니까 snum은 null이 맞나 검산
+        FROM dsale d
+        JOIN book b ON d.bcode = b.bcode
+        JOIN sale s ON d.snum = s.snum
+        RIGHT OUTER JOIN cus c ON s.cnum = c.cnum
+        GROUP BY c.cnum, cname
+        ORDER BY c.cnum;
+        
+        --확인용 SQL) 구매한 고객 목록
+        SELECT cnum from cus; --1~15번
+        SELECT DISTINCT cnum --11, 15는 구매이력 없음
+        FROM dsale d
+        JOIN sale s ON d.snum = s.snum
+        ORDER BY cnum;
+        
+        --문제3) 고객별 누적 판매 금액 및 비율
+        --cNum, cName, bPrice*qty 합, 전체판매금액에대한비율
+        --판매금액이 없는 고객 굳이 표시하지 않아도 됨.
+        SELECT c.cnum, cname, NVL(sum(bprice*qty),0) 합, 
+                    NVL(round(sum(bprice*qty)/
+                        (SELECT sum(bprice*qty) price 
+                        FROM dsale d
+                        JOIN book b ON d.bcode = b.bcode)*100,1),0)||'%' 판매비율,
+                    ROUND(RATIO_TO_REPORT(SUM(bPrice * qty)) OVER() * 100, 1) || '%' 판매비율2 --★
+        FROM cus c
+        JOIN sale s ON c.cnum = s.cnum
+        JOIN dsale d ON s.snum = d.snum
+        JOIN book b ON d.bcode = b.bcode 
+        GROUP BY c.cnum, cname
+        ORDER BY c.cnum;
 
+        --문제4) 연도별 고객 누적 판매 금액이 가장 많은 데이터
+        --(판매년도), cNum, cName, bPrice*qty 합
+        --연도별 오름차순
+        --연도별로 1등 고객이름을 출력하면 됨
+        
+        SELECT 연도, 고객번호, 고객명, TO_CHAR(합,'L999,999,999') 판매실적 FROM (
+            SELECT TO_CHAR(sdate,'YYYY') 연도, c.cnum 고객번호, cname 고객명, 
+                       NVL(sum(bprice*qty),0) 합, RANK() OVER(PARTITION BY TO_CHAR(sdate,'YYYY') ORDER BY sum(bprice*qty) DESC) 순위
+            FROM cus c
+            JOIN sale s ON c.cnum = s.cnum --어차피 판매 실적이 없는 고객사는 순위집계 대상이 아니므로 null값을 수집할 필요가 없다. 따라서 OUTER JOIN이 아닌 INNER JOIN을 사용한다.
+            JOIN dsale d ON s.snum = d.snum
+            JOIN book b ON d.bcode = b.bcode 
+            GROUP BY TO_CHAR(sdate,'YYYY'), c.cnum, cname
+--            ORDER BY 연도, c.cnum
+        ) 
+        WHERE 순위=1
+        ORDER BY 연도; --판매실적이 없으면 연도가 NULL로 나온다.
+        
    ο UPDATE JOIN VIEW 이용하여 빠른 업데이트(서브쿼리 보다 훨씬 빠르다.)
       - 테이블을 조인하여 UPDATE
       - tb_a 테이블의 내용(new_addr1, new_addr2)을 tb_b에 존재하는 내용(n_addr1, n_addr2)으로 수정
