@@ -113,8 +113,8 @@ JOIN score s ON i.hakbeon = s.hakbeon;
 SELECT hak, ban, gubun, name, 
         com, excel, word, 
         com+excel+word tot, round((com+excel+word)/3,1) ave,
-        RANK() OVER(PARTITION BY ban ORDER BY (com+excel+word) DESC) 학급석차,
-        RANK() OVER(PARTITION BY hak ORDER BY (com+excel+word) DESC) 학년석차
+        RANK() OVER(PARTITION BY hak,ban,gubun ORDER BY (com+excel+word) DESC) 학급석차,
+        RANK() OVER(PARTITION BY hak,gubun ORDER BY (com+excel+word) DESC) 학년석차
 FROM injeok i
 JOIN score s ON i.hakbeon = s.hakbeon
 ORDER BY hak, ban, gubun, 학급석차, 학년석차;

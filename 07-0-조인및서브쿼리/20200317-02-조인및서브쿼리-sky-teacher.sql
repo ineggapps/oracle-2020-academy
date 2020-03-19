@@ -351,14 +351,14 @@
 
         -------------------------------------------------------
         -- EQUI JOIN
-		SELECT s.sNum, bCode, cNum, sDate, qty
-		FROM sale s
-		JOIN dsale d ON s.sNum = d.sNum
-		
+        SELECT s.sNum, bCode, cNum, sDate, qty
+        FROM sale s
+        JOIN dsale d ON s.sNum = d.sNum
+        
         -- NON-EQUI JOIN
-		SELECT s.sNum, bCode, cNum, sDate, qty
-		FROM sale s
-		JOIN dsale d ON s.sNum > 10;
+        SELECT s.sNum, bCode, cNum, sDate, qty
+        FROM sale s
+        JOIN dsale d ON s.sNum > 10;
 
 
    ο OUTER JOIN
@@ -375,55 +375,55 @@
 
         -------------------------------------------------------
         -- book(bCode, bName), dsale(bCode, sNum, qty)
-		-- EQUI JOIN
-		SELECT b.bCode, bName, sNum, qty
-		FROM book b, dsale d
-		WHERE b.bCode = d.bCode;
-		
-		-- LEFT OUTER JOIN
-		SELECT b.bCode, bName, sNum, qty
-		FROM book b, dsale d
-		WHERE b.bCode = d.bCode(+);
-		
-		SELECT b.bCode, bName, sNum, qty
-		FROM book b
-		LEFT OUTER JOIN dsale d ON b.bCode = d.bCode;
-		
-		-- bCode, bName, sNum, sDate, qty 출력
-		  -- 단, bCode와 bName은 한권도 판매가 되지 않은 책도 출력
-		SELECT b.bCode, bName, d.sNum, sDate, qty
-		FROM book b
-		LEFT OUTER JOIN dsale d ON b.bCode = d.bCode
-		LEFT OUTER JOIN sale s ON d.sNum = s.sNum;
+        -- EQUI JOIN
+        SELECT b.bCode, bName, sNum, qty
+        FROM book b, dsale d
+        WHERE b.bCode = d.bCode;
+        
+        -- LEFT OUTER JOIN
+        SELECT b.bCode, bName, sNum, qty
+        FROM book b, dsale d
+        WHERE b.bCode = d.bCode(+);
+        
+        SELECT b.bCode, bName, sNum, qty
+        FROM book b
+        LEFT OUTER JOIN dsale d ON b.bCode = d.bCode;
+        
+        -- bCode, bName, sNum, sDate, qty 출력
+          -- 단, bCode와 bName은 한권도 판매가 되지 않은 책도 출력
+        SELECT b.bCode, bName, d.sNum, sDate, qty
+        FROM book b
+        LEFT OUTER JOIN dsale d ON b.bCode = d.bCode
+        LEFT OUTER JOIN sale s ON d.sNum = s.sNum;
 
-        ---------------------------------		
-		-- 판매된 책코드, 책이름
-		SELECT bCode, bName
-		FROM book
-		WHERE bCode IN ( SELECT DISTINCT bCode FROM dsale );
-		
-		SELECT b.bCode, bName
-		FROM book b
-		LEFT OUTER JOIN dsale d ON b.bCode = d.bCode
-		-- WHERE dNum IS NOT NULL;
-        WHERE d.bCode IS NOT NULL;
-		
-		-- 한권도 판매되지 않은 서적
-		SELECT b.bCode, bName
-		FROM book b
-		LEFT OUTER JOIN dsale d ON b.bCode = d.bCode
-        WHERE d.bCode IS NULL;
-		
-        ---------------------------------		
-		-- 올해 판매된 책코드, 책이름
-		SELECT bCode, bName
+        ---------------------------------        
+        -- 판매된 책코드, 책이름
+        SELECT bCode, bName
         FROM book
-		WHERE bCode IN (
+        WHERE bCode IN ( SELECT DISTINCT bCode FROM dsale );
+        
+        SELECT b.bCode, bName
+        FROM book b
+        LEFT OUTER JOIN dsale d ON b.bCode = d.bCode
+        -- WHERE dNum IS NOT NULL;
+        WHERE d.bCode IS NOT NULL;
+        
+        -- 한권도 판매되지 않은 서적
+        SELECT b.bCode, bName
+        FROM book b
+        LEFT OUTER JOIN dsale d ON b.bCode = d.bCode
+        WHERE d.bCode IS NULL;
+        
+        ---------------------------------        
+        -- 올해 판매된 책코드, 책이름
+        SELECT bCode, bName
+        FROM book
+        WHERE bCode IN (
            SELECT DISTINCT bCode
-		   FROM dsale d
-		   JOIN sale s ON d.sNum = s.sNum
+           FROM dsale d
+           JOIN sale s ON d.sNum = s.sNum
            WHERE TO_CHAR(sDate, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
-		);
+        );
 
 
      2) RIGHT OUTER JOIN
@@ -439,19 +439,19 @@
 
         -------------------------------------------------------
         -- book(bCode, bName), dsale(bCode, sNum, qty)
-		-- EQUI JOIN
-		SELECT b.bCode, bName, sNum, qty
-		FROM book b, dsale d
-		WHERE b.bCode = d.bCode;
-		
-		-- RIGHT OUTER JOIN
-		SELECT b.bCode, bName, sNum, qty
-		FROM dsale d, book b
-		WHERE d.bCode(+) = b.bCode;
-		
-		SELECT b.bCode, bName, sNum, qty
-		FROM dsale d
-		RIGHT OUTER JOIN book b ON d.bCode = b.bCode;
+        -- EQUI JOIN
+        SELECT b.bCode, bName, sNum, qty
+        FROM book b, dsale d
+        WHERE b.bCode = d.bCode;
+        
+        -- RIGHT OUTER JOIN
+        SELECT b.bCode, bName, sNum, qty
+        FROM dsale d, book b
+        WHERE d.bCode(+) = b.bCode;
+        
+        SELECT b.bCode, bName, sNum, qty
+        FROM dsale d
+        RIGHT OUTER JOIN book b ON d.bCode = b.bCode;
 
 
      3) FULL OUTER JOIN
@@ -461,35 +461,35 @@
 
         -------------------------------------------------------
         -- 
-		SELECT sNum, sDate, s.cNum, m.cNum, userId
-		FROM sale s
-		LEFT OUTER JOIN member m ON s.cNum = m.cNum;
-		
-		SELECT sNum, sDate, s.cNum, m.cNum, userId
-		FROM sale s
-		RIGHT OUTER JOIN member m ON s.cNum = m.cNum;
+        SELECT sNum, sDate, s.cNum, m.cNum, userId
+        FROM sale s
+        LEFT OUTER JOIN member m ON s.cNum = m.cNum;
+        
+        SELECT sNum, sDate, s.cNum, m.cNum, userId
+        FROM sale s
+        RIGHT OUTER JOIN member m ON s.cNum = m.cNum;
 
-		SELECT sNum, sDate, s.cNum, m.cNum, userId
-		FROM sale s
-		FULL OUTER JOIN member m ON s.cNum = m.cNum;
+        SELECT sNum, sDate, s.cNum, m.cNum, userId
+        FROM sale s
+        FULL OUTER JOIN member m ON s.cNum = m.cNum;
 
         -- cus를 마지막에 JOIN 해서 cName이 NULL로 출력되는 것이 있음
-		SELECT sNum, sDate, s.cNum, m.cNum, cName, userId
-		FROM sale s
-		FULL OUTER JOIN member m ON s.cNum = m.cNum
-		FULL OUTER JOIN cus c ON c.cNum = s.cNum;
+        SELECT sNum, sDate, s.cNum, m.cNum, cName, userId
+        FROM sale s
+        FULL OUTER JOIN member m ON s.cNum = m.cNum
+        FULL OUTER JOIN cus c ON c.cNum = s.cNum;
 
         -- cName이 NULL이 출력 되지 않음
-		SELECT sNum, sDate, s.cNum, m.cNum, cName, userId
-		FROM cus c
-		FULL OUTER JOIN member m ON c.cNum = m.cNum
-		FULL OUTER JOIN sale s ON c.cNum = s.cNum;
+        SELECT sNum, sDate, s.cNum, m.cNum, cName, userId
+        FROM cus c
+        FULL OUTER JOIN member m ON c.cNum = m.cNum
+        FULL OUTER JOIN sale s ON c.cNum = s.cNum;
 
         ------------------------------------------------------
         -- 예제
         -- 비회원 판매 현황 : cNum, cName, bCode, bName, sDate, bPrice, qty
            -- book(bCode, bPrice), dsale(sNum, bCode, qty), sale(sNum, sDate, cNum), cus(cNum, cName), member(cNum, userId)
-		   
+           
             SELECT s.cNum, cName, userId, b.bCode, bName, sDate, bPrice, qty
             FROM  book b
             JOIN  dsale d  ON  b.bCode = d.bCode
@@ -508,7 +508,7 @@
         -- 고객별 누적판매 금액(고객번호:cNum, 고객명:cName, 판매급액합) 출력.
           -- 단, 고객중 책을 한권도 구매하지 않은 고객도 출력
           -- book(bCode, bPrice), dsale(sNum, bCode, qty), sale(sNum, cNum), cus(cNum, cName)
-		  
+          
           SELECT c.cNum, cName, NVL(SUM(bPrice * qty), 0) 합
           FROM cus c
           LEFT OUTER JOIN sale s ON c.cNum = s.cNum
@@ -527,7 +527,7 @@
       
         -- 고객별 누적판매 금액 및 비율(고객번호:cNum, 고객명:cName, 판매급액합, 비율) 출력.
           -- book(bCode, bPrice), dsale(sNum, bCode, qty), sale(sNum, cNum), cus(cNum, cName)
-		  
+          
           SELECT c.cNum, cName, SUM(bPrice * qty) 합
           FROM book b
           JOIN dsale d ON b.bCode =d.bCode
@@ -559,7 +559,7 @@
            -- 판매년도, cNum, cName, bPrice*qty 합
            -- 년도 오름차순으로   
            -- book(bCode, bPrice), dsale(sNum, bCode, qty), sale(sNum, cNum, sDate), cus(cNum, cName)
-		   
+           
             SELECT TO_CHAR(sDate, 'YYYY') 년도, s.cNum, cName, SUM(bPrice * qty) 금액
             FROM  book b
             JOIN  dsale d ON  b.bCode = d.bCode
@@ -587,6 +587,72 @@
                 GROUP BY TO_CHAR(sDate, 'YYYY'), s.cNum, cName
             ) WHERE  순위=1
             ORDER BY 년도;
+
+        -- 년도의 월별 서적의 판매 수량의 합 구하기 : 년도오름차순, 책코드 오름차순
+            -- 년도 책코드 책이름 1월 2월 3월 ... 12월
+                SELECT TO_CHAR(sDate, 'YYYY') 년도, b.bCode, bName, qty
+                FROM  book b
+                JOIN  dsale d ON  b.bCode = d.bCode
+                JOIN  sale s  ON  d.sNum = s.sNum;
+
+                SELECT TO_CHAR(sDate, 'YYYY') 년도, b.bCode, bName, 
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '01', qty)),0) M01,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '02', qty)),0) M02,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '03', qty)),0) M03,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '04', qty)),0) M04,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '05', qty)),0) M05,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '06', qty)),0) M06,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '07', qty)),0) M07,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '08', qty)),0) M08,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '09', qty)),0) M09,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '10', qty)),0) M10,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '11', qty)),0) M11,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '12', qty)),0) M12
+                FROM  book b
+                JOIN  dsale d ON  b.bCode = d.bCode
+                JOIN  sale s  ON  d.sNum = s.sNum
+                GROUP BY TO_CHAR(sDate, 'YYYY'), b.bCode, bName
+                ORDER BY 년도, bCode;
+
+            -- 년도별 소계
+                SELECT TO_CHAR(sDate, 'YYYY') 년도, b.bCode, bName, 
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '01', qty)),0) M01,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '02', qty)),0) M02,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '03', qty)),0) M03,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '04', qty)),0) M04,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '05', qty)),0) M05,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '06', qty)),0) M06,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '07', qty)),0) M07,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '08', qty)),0) M08,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '09', qty)),0) M09,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '10', qty)),0) M10,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '11', qty)),0) M11,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '12', qty)),0) M12
+                FROM  book b
+                JOIN  dsale d ON  b.bCode = d.bCode
+                JOIN  sale s  ON  d.sNum = s.sNum
+                GROUP BY TO_CHAR(sDate, 'YYYY'), ROLLUP((b.bCode, bName))
+                ORDER BY 년도, bCode;
+
+            -- 년도별 소계, 총계
+                SELECT TO_CHAR(sDate, 'YYYY') 년도, b.bCode, bName, 
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '01', qty)),0) M01,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '02', qty)),0) M02,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '03', qty)),0) M03,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '04', qty)),0) M04,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '05', qty)),0) M05,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '06', qty)),0) M06,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '07', qty)),0) M07,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '08', qty)),0) M08,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '09', qty)),0) M09,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '10', qty)),0) M10,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '11', qty)),0) M11,
+                   NVL(SUM(DECODE(TO_CHAR(sDate, 'MM'), '12', qty)),0) M12
+                FROM  book b
+                JOIN  dsale d ON  b.bCode = d.bCode
+                JOIN  sale s  ON  d.sNum = s.sNum
+                GROUP BY ROLLUP(TO_CHAR(sDate, 'YYYY'), (b.bCode, bName))
+                ORDER BY 년도, bCode;
 
 
    ο UPDATE JOIN VIEW 이용하여 빠른 업데이트(서브쿼리 보다 훨씬 빠르다.)
@@ -660,5 +726,4 @@
    ο 상호 연관 서브 쿼리(correlated subquery, 상관 하위 부질의)
      -------------------------------------------------------
      --
-
 

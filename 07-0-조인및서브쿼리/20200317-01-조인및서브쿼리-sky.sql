@@ -703,7 +703,7 @@ select * from tab;
         JOIN dsale d ON b.bcode = d.bcode
         JOIN sale s ON d.snum = s.snum
         GROUP BY 
-            TO_CHAR(sdate,'YYYY'), b.bcode, bname
+            ROLLUP(TO_CHAR(sdate,'YYYY'), (b.bcode, bname))
         ORDER BY 연도, b.bcode;
         
         
@@ -722,76 +722,3 @@ select * from tab;
     --------------
         cus: cNum, cName, cTel
         member:cnum, userid, userPwd, userEmail
-        
-        
-   ο UPDATE JOIN VIEW 이용하여 빠른 업데이트(서브쿼리 보다 훨씬 빠르다.)
-      - 테이블을 조인하여 UPDATE
-      - tb_a 테이블의 내용(new_addr1, new_addr2)을 tb_b에 존재하는 내용(n_addr1, n_addr2)으로 수정
-      - 조인 조건의 컬럼이 UNIQUE 속성이어야 가능하며(관계가 1:1) 그렇지 않으면 ORA-01779 오류가 발생한다.
-
-     -------------------------------------------------------
-     -- 예제
-        CREATE TABLE tb_a (
-             num  NUMBER PRIMARY KEY
-            ,addr1  VARCHAR2(255)
-            ,addr2 VARCHAR2(255)
-            ,new_addr1 VARCHAR2(255)
-            ,new_addr2 VARCHAR2(255)
-       );
-
-      CREATE TABLE tb_b (
-           num  NUMBER PRIMARY KEY
-          ,n_addr1 VARCHAR2(255)
-          ,n_addr2 VARCHAR2(255)
-      );
-
-      INSERT INTO tb_a VALUES(1,'서울1-1', '서울1-2','도로1-1', '도로1-2');
-      INSERT INTO tb_a VALUES(2,'서울2-1', '서울2-2','도로2-1', '도로2-2');
-      INSERT INTO tb_a VALUES(3,'서울3-1', '서울3-2','도로3-1', '도로3-2');
-      INSERT INTO tb_a VALUES(4,'서울4-1', '서울4-2','도로4-1', '도로4-2');
-      INSERT INTO tb_a VALUES(5,'서울5-1', '서울5-2','도로5-1', '도로5-2');
-
-      INSERT INTO tb_b VALUES(1,'세종1-1', '세종1-2');
-      INSERT INTO tb_b VALUES(3,'세종3-1', '세종3-2');
-      INSERT INTO tb_b VALUES(5,'세종5-1', '세종5-2');
-      COMMIT;
-
-     -------------------------------------------------------
-     --
-
-
- ※ subquery
-   ο WITH
-     -------------------------------------------------------
-     --
-
-
-   ο 단일 행 서브 쿼리
-     -------------------------------------------------------
-     --
-
-
-   ο 다중 행 서브 쿼리
-      - IN
-       -------------------------------------------------------
-       --
-
-
-      - ANY(SOME) 
-       -------------------------------------------------------
-       --
-
-
-      - ALL
-       -------------------------------------------------------
-       --
-
-
-      - EXISTS 
-       -------------------------------------------------------
-       --
-
-
-   ο 상호 연관 서브 쿼리(correlated subquery, 상관 하위 부질의)
-     -------------------------------------------------------
-     --
