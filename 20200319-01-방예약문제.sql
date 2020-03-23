@@ -36,9 +36,30 @@ ORDER BY checkIn ASC;
 SELECT distinct roomNum from roomReservation
 order by roomNum;
 
---★★★★★★★★★★★★★★★★★★★★★★★★ㅍ
---출제의도를 모르겠어서..
 
+--■■■ 선생님 답안
+SELECT * FROM roomreservation;
+
+--예약이 불가능한 경우의 수는 4가지이다.
+SELECT * FROM roomreservation
+WHERE(
+    TO_DATE(checkIn) >= TO_DATE('20200724') AND
+    TO_DATE(checkout) < TO_DATE('20200729') --CHECKOUT 한 날 체크인을 할 수 있으므로 범위에 포함시켜선 안 됨( <=가 아니라 <)
+) 
+OR ( 
+    TO_DATE(checkIn) <= TO_DATE('20200724') AND --7월 24일을 포함하여 그 이전이고
+    TO_DATE(checkout) >= TO_DATE('20200724') --7월 24일을 포함하여 그 이후인 경우
+)
+OR (    
+    TO_DATE(checkout) > TO_DATE('20200724') AND --체크아웃이 7월 24일~29일 사이
+    TO_DATE(checkout) < TO_DATE('20200729') 
+)
+OR ( 
+    TO_DATE(checkIn) >= TO_DATE('20200724') AND
+    TO_DATE(checkIn) < TO_DATE('20200729') --체크인이 7월 24일~29일 사이
+)
+ORDER BY checkIn asc;
+---
 
 -- 20200724 ~ 20200729 예약 된 룸을 모두 출력. 0729에 checkOut 되면 0729에 checkIn 가능
 --★★
