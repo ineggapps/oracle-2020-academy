@@ -1,4 +1,4 @@
---■ PL/SQL
+--■ PL/SQL(Procedural Language/SQL)
 -- ※ 프로시저 (Stored Procedure)
 --  자주 사용되는 업무의 흐름을 데이터베이스에 저장하고 나중에 호출하여 사용한다.
 --  선행컴파일되므로 처리 속도가 빠르다. 그냥 쿼리문을 사용하는 것보다 훨씬 좋다. (오류도 사전에 검증 되었고)
@@ -244,6 +244,114 @@
     JOIN ex2 USING(num)
     JOIN ex3 USING(num);
     
+          -- 수정 프로시저
+          CREATE OR REPLACE PROCEDURE pUpdateEx (
+              pNum    NUMBER
+              ,pName    VARCHAR2
+              ,pBirth  DATE
+              ,pScore  NUMBER
+          )
+          IS
+            vgrade NUMBER(2,1);
+          BEGIN
+             IF pScore < 0 OR pScore > 100 THEN
+               RAISE_APPLICATION_ERROR(-20001, '점수는 0~100만 가능...');
+             END IF;
+             
+             IF pScore >= 90 THEN vgrade := 4.0;
+             ELSIF pScore >= 80 THEN vgrade := 3.0;
+             ELSIF pScore >= 70 THEN vgrade := 2.0;
+             ELSIF pScore >= 60 THEN vgrade := 1.0;
+             ELSE vgrade := 0.0;
+             END IF;
+             
+             UPDATE ex1 SET name=pName WHERE num=pNum;
+             UPDATE ex2 SET birth=pBirth WHERE num=pNum;
+             UPDATE ex3 SET score=pScore, grade=vgrade  WHERE num=pNum;
+            COMMIT;
+          END;
+          /
+
+         -- 삭제 프로시저
+         CREATE OR REPLACE PROCEDURE pDeleteEx
+         (
+            pNum NUMBER
+         )
+         IS
+         BEGIN
+             DELETE FROM ex3 WHERE num=pNum;
+             DELETE FROM ex2 WHERE num=pNum;
+             DELETE FROM ex1 WHERE num=pNum;
+    
+             COMMIT;
+    
+         END;
+         /
+
+      -- 번호(num)에 해당하는 하나의 ex1, ex2, ex3 테이블 레코드 출력
+      CREATE OR REPLACE PROCEDURE pSelectOneEx
+      ( 
+          pNum  IN  NUMBER
+      )
+      IS
+          TYPE MYTYPE IS RECORD (
+             num ex1.num%TYPE
+             ,name ex1.name%TYPE
+             ,birth ex2.birth%TYPE
+             ,score ex3.score%TYPE
+             ,grade ex3.grade%TYPE
+         );
+         rec MYTYPE;
+      BEGIN
+         SELECT e1.num, name, birth, score, grade INTO rec
+         FROM ex1 e1
+         LEFT OUTER JOIN ex2 e2 ON e1.num=e2.num
+         LEFT OUTER JOIN ex3 e3 ON e1.num=e3.num
+         WHERE e1.num=pNum;
+         DBMS_OUTPUT.PUT(rec.num || ':');
+         DBMS_OUTPUT.PUT(rec.name || ':');
+         DBMS_OUTPUT.PUT(rec.birth || ':');
+         DBMS_OUTPUT.PUT_LINE(rec.score || ':' || rec.grade);
+      END;
+      /
+
+      EXEC pSelectOneEx(1);
+      
+      --------------------------------------------
+      --OUT 파라미터
+      CREATE OR REPLACE PROCEDURE pSelectOutEx(
+        pNum IN  NUMBER, --IN파라미터는 BEGIN부에서 값을 바꿀 수 없음 (읽기전용임) - 생략 가능
+        pName OUT VARCHAR2, --OUT 파라미터 (쓰기전용)
+        pScore OUT NUMBER --OUT 파라미터 (쓰기전용)
+      )
+      IS
+      BEGIN
+        SELECT name, score INTO pName, pScore
+        FROM ex1 a
+        JOIN ex3 b ON a.num = b.num
+        WHERE a.num = pNum;
+      END;
+      /
+
+    CREATE OR REPLACE PROCEDURE pSelectEx (
+        pNum IN NUMBER
+    )
+    IS
+        vName VARCHAR2(30);
+        vScore NUMBER(3);
+    BEGIN 
+        pSelectOutEx(pNum, vName, vScore); --다른 프로시저 호출하기(프로시저 안에서는 EXEC 생략이 가능하다)
+        DBMS_OUTPUT.PUT_LINE(vname || ':' || vscore);
+    END;
+    /
+    
+    EXEC pSelectEx(2);
+    
+    SELECT * FROM ex1
+    JOIN ex2 USING(num)
+    JOIN ex3 USING(num);
+    
+     ------------------------------------
 -- ※ 함수(사용자정의함수는 결과를 return)
 -- function은 반드시 return이 있어야 한다.
 --     -------------------------------------------------------
@@ -454,8 +562,8 @@
         )
         IS
         BEGIN
-            DELETE FROM score2 WHERE hak=pHak;
-            DELETE FROM score1 WHERE hak=pHak;
+            DELETE FROM score2 WHERE hak=pHak;--자식 테이블(외래키 참조하는 테이블)을 먼저 제거
+            DELETE FROM score1 WHERE hak=pHak;--부모 테이블을 나중에 제거
             COMMIT;
         END;
         /
