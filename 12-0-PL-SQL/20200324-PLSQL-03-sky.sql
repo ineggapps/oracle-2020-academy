@@ -1,4 +1,5 @@
 --■ PL/SQL
+SELECT * FROM user_procedures;
 -- ※ 커서(Cursor)
 --     -------------------------------------------------------
 --     -- 암시적 커서
@@ -318,4 +319,48 @@ SELECT * FROM user_sys_privs; -- CREATE TABLE, CREATE SEQUENCE 항목 확인하기!
     
     EXEC DELETE_TABLE_WITH_SEQUENCE('board');
     
+ 
+      --
+      CREATE  OR  REPLACE  PROCEDURE  pDynTest
+      IS
+        s     VARCHAR2(4000);
+        vId   NUMBER;
+        vMemo VARCHAR2(100);
+  
+        TYPE  MYTYPE  IS  RECORD (
+            id    NUMBER,
+            memo  VARCHAR2(100)
+        );
+        rec  MYTYPE;
+      BEGIN
+          -- 테이블이 존재하면 삭제
+          FOR t  IN (SELECT  tname  FROM  tab  WHERE  tname = 'EX') LOOP
+              EXECUTE  IMMEDIATE  'DROP  TABLE  ex  PURGE';
+              EXIT;
+          END LOOP;
     
+          -- 테이블 생성
+          s := 'CREATE  TABLE  ex(id  NUMBER,  memo  VARCHAR2(100))';
+          EXECUTE  IMMEDIATE s;
+    
+          -- 데이터 추가
+          s := 'INSERT INTO  ex  VALUES(:1, :2)';
+          FOR  n  IN  1 .. 10   LOOP
+              vId    :=  64+n;
+              vMemo  :=  CHR(vId);
+        
+              EXECUTE  IMMEDIATE  s  USING  n,  vMemo;
+          END LOOP;
+          COMMIT;
+    
+          -- 자료 출력
+          vId := 1;
+          s := 'SELECT  *  FROM  ex  WHERE  id = :n';
+          EXECUTE  IMMEDIATE  s  INTO  rec  USING  vId;
+    
+          DBMS_OUTPUT.PUT_LINE(rec.id || ':' || rec.memo);
+    
+      END;
+      /
+
+      EXECUTE pDynTest;
