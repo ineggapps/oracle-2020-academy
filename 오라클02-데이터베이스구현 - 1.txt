@@ -1,80 +1,80 @@
-±³°ú¸í¸ñ : Oracle DBMS
-´É·Â´ÜÀ§¸í : µ¥ÀÌÅÍº£ÀÌ½º±¸Çö
-¼¼ºÎ±³À°³»¿ë : DBMS(Data Base Management System) ¼³Ä¡ÇÏ±â,µ¥ÀÌÅÍº£ÀÌ½º »ý¼ºÇÏ±â,µ¥ÀÌÅÍº£ÀÌ½º ¿ÀºêÁ§Æ® »ý¼ºÇÏ±â
+ï»¿êµê³¼ëª…ëª© : Oracle DBMS
+ëŠ¥ë ¥ë‹¨ìœ„ëª… : ë°ì´í„°ë² ì´ìŠ¤êµ¬í˜„
+ì„¸ë¶€êµìœ¡ë‚´ìš© : DBMS(Data Base Management System) ì„¤ì¹˜í•˜ê¸°,ë°ì´í„°ë² ì´ìŠ¤ ìƒì„±í•˜ê¸°,ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¸Œì íŠ¸ ìƒì„±í•˜ê¸°
 
 
 =============================================
-¹®Á¦1] ´É·Â´ÜÀ§¿ä¼Ò : DBMS(Data Base Management System) ¼³Ä¡ÇÏ±â
-¹®Á¦ : ´ÙÀ½°ú °°ÀÌ sqlplus¸¦ ÀÌ¿ëÇÏ¿© hr »ç¿ëÀÚ·Î Á¢¼ÓÇÏ´Â °úÁ¤¿¡¼­ 
+ë¬¸ì œ1] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : DBMS(Data Base Management System) ì„¤ì¹˜í•˜ê¸°
+ë¬¸ì œ : ë‹¤ìŒê³¼ ê°™ì´ sqlplusë¥¼ ì´ìš©í•˜ì—¬ hr ì‚¬ìš©ìžë¡œ ì ‘ì†í•˜ëŠ” ê³¼ì •ì—ì„œ 
  cmd>sqlplus hr/HR
  ERROR:
  ORA-28000: the account is locked
- °ú °°Àº ¿À·ù°¡ ¹ß»ýÇß´Ù. hr »ç¿ëÀÚ°¡ Á¤»óÀûÀ¸·Î Á¢¼ÓÇÒ ¼ö ÀÖµµ·Ï system °èÁ¤¿¡¼­ ÇÊ¿äÇÑ  Á¶Ä¡(SQL ±¸¹®)´Â ?
+ ê³¼ ê°™ì€ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆë‹¤. hr ì‚¬ìš©ìžê°€ ì •ìƒì ìœ¼ë¡œ ì ‘ì†í•  ìˆ˜ ìžˆë„ë¡ system ê³„ì •ì—ì„œ í•„ìš”í•œ  ì¡°ì¹˜(SQL êµ¬ë¬¸)ëŠ” ?
  
 1) ALTER USER hr ACCOUNT UNLOCK;
 2) MODIFY USER hr UNLOCK;
 3) MODIFY USER hr ACCOUNT UNLOCK;
 4) ALTER USER hr UNLOCK;
 
-Á¤´ä : 1)
+ì •ë‹µ : 1)
 
 
 
-¹®Á¦2] ´É·Â´ÜÀ§¿ä¼Ò : DBMS(Data Base Management System) ¼³Ä¡ÇÏ±â
-¹®Á¦ : DBMSÀÇ ÇÊ¼ö±â´É Áß ¸ðµç ÀÀ¿ë ÇÁ·Î±×·¥µéÀÌ ¿ä±¸ÇÏ´Â µ¥ÀÌÅÍ ±¸Á¶¸¦ Áö¿øÇÏ±â À§ÇØ µ¥ÀÌÅÍº£ÀÌ½º¿¡ ÀúÀåµÉ µ¥ÀÌÅÍ Å¸ÀÔ°ú ±¸Á¶¿¡ ´ëÇÑ Á¤ÀÇ, ÀÌ¿ë ¹æ½Ä, Á¦¾àÁ¶°Ç µîÀ» ¸í½ÃÇÏ´Â ±â´ÉÀº ? 
-1) Á¤ÀÇ ±â´É
-2) Á¶ÀÛ ±â´É
-3) »ç»ó ±â´É
-4) Á¦¾î ±â´É
+ë¬¸ì œ2] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : DBMS(Data Base Management System) ì„¤ì¹˜í•˜ê¸°
+ë¬¸ì œ : DBMSì˜ í•„ìˆ˜ê¸°ëŠ¥ ì¤‘ ëª¨ë“  ì‘ìš© í”„ë¡œê·¸ëž¨ë“¤ì´ ìš”êµ¬í•˜ëŠ” ë°ì´í„° êµ¬ì¡°ë¥¼ ì§€ì›í•˜ê¸° ìœ„í•´ ë°ì´í„°ë² ì´ìŠ¤ì— ì €ìž¥ë  ë°ì´í„° íƒ€ìž…ê³¼ êµ¬ì¡°ì— ëŒ€í•œ ì •ì˜, ì´ìš© ë°©ì‹, ì œì•½ì¡°ê±´ ë“±ì„ ëª…ì‹œí•˜ëŠ” ê¸°ëŠ¥ì€ ? 
+1) ì •ì˜ ê¸°ëŠ¥
+2) ì¡°ìž‘ ê¸°ëŠ¥
+3) ì‚¬ìƒ ê¸°ëŠ¥
+4) ì œì–´ ê¸°ëŠ¥
 
-Á¤´ä : 
-
-
-
-¹®Á¦3] ´É·Â´ÜÀ§¿ä¼Ò : DBMS(Data Base Management System) ¼³Ä¡ÇÏ±â
-¹®Á¦ : system °èÁ¤¿¡¼­ ´ÙÀ½ÀÇ »ç¿ëÀÚ¸¦ Ãß°¡ÇÏ·Á°í ÇÑ´Ù. ¨ç¹ø°ú ¨è¹ø ¹®Àå¿¡ µé¾î°¥ ±¸¹®Àº ?
-»ç¿ëÀÚ¸í : sky
-ÆÐ½º¿öµå : java1234
-
-SQL ±¸¹® :  CREATE    [   ¨ç    ]   sky   [     ¨è    ]   java1234;
-
-1) ¨ç MEMBER ¨è IDENTIFIED BY
-2) ¨ç MEMBER ¨è PASSWORD BY
-3) ¨ç USER ¨è PASSWORD BY
-4) ¨ç USER ¨è IDENTIFIED BY
-
-Á¤´ä : 4)
+ì •ë‹µ : 
 
 
 
-¹®Á¦4] ´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º »ý¼ºÇÏ±â
-¹®Á¦ : µ¥ÀÌÅÍº£ÀÌ½ºÀÇ »óÅÂ¸¦ º¯È¯½ÃÅ°±â À§ÇÏ¿© ³í¸®Àû ±â´ÉÀ» ¼öÇàÇÏ´Â ÇÏ³ªÀÇ ÀÛ¾÷ ´ÜÀ§¸¦ ¹«¾ùÀÌ¶óÇÏ´Â°¡ ?
+ë¬¸ì œ3] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : DBMS(Data Base Management System) ì„¤ì¹˜í•˜ê¸°
+ë¬¸ì œ : system ê³„ì •ì—ì„œ ë‹¤ìŒì˜ ì‚¬ìš©ìžë¥¼ ì¶”ê°€í•˜ë ¤ê³  í•œë‹¤. â‘ ë²ˆê³¼ â‘¡ë²ˆ ë¬¸ìž¥ì— ë“¤ì–´ê°ˆ êµ¬ë¬¸ì€ ?
+ì‚¬ìš©ìžëª… : sky
+íŒ¨ìŠ¤ì›Œë“œ : java1234
 
-1) ÇÁ·Î½ÃÀú
-2) Æ®·£Àè¼Ç
-3) ¸ðµâ
-4) µµ¸ÞÀÎ
+SQL êµ¬ë¬¸ :  CREATE    [   â‘     ]   sky   [     â‘¡    ]   java1234;
 
-Á¤´ä : 
+1) â‘  MEMBER â‘¡ IDENTIFIED BY
+2) â‘  MEMBER â‘¡ PASSWORD BY
+3) â‘  USER â‘¡ PASSWORD BY
+4) â‘  USER â‘¡ IDENTIFIED BY
+
+ì •ë‹µ : 4)
 
 
 
-¹®Á¦5] ´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º »ý¼ºÇÏ±â
-¹®Á¦ :  º´ÇàÁ¦¾îÀÇ ¸ñÀûÀ¸·Î ¿ÇÁö ¾ÊÀº °ÍÀº ? 
+ë¬¸ì œ4] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ìƒì„±í•˜ê¸°
+ë¬¸ì œ : ë°ì´í„°ë² ì´ìŠ¤ì˜ ìƒíƒœë¥¼ ë³€í™˜ì‹œí‚¤ê¸° ìœ„í•˜ì—¬ ë…¼ë¦¬ì  ê¸°ëŠ¥ì„ ìˆ˜í–‰í•˜ëŠ” í•˜ë‚˜ì˜ ìž‘ì—… ë‹¨ìœ„ë¥¼ ë¬´ì—‡ì´ë¼í•˜ëŠ”ê°€ ?
 
-1) »ç¿ëÀÚ¿¡ ´ëÇÑ ÀÀ´ä½Ã°£ ÃÖ¼ÒÈ­
-2) ½Ã½ºÅÛ È°¿ëµµ ÃÖ´ëÈ­
-3) µ¥ÀÌÅÍº£ÀÌ½º ÀÏ°ü¼º À¯Áö
-4) µ¥ÀÌÅÍº£ÀÌ½º °øÀ¯µµ ÃÖ¼ÒÈ­
+1) í”„ë¡œì‹œì €
+2) íŠ¸ëžœìž­ì…˜
+3) ëª¨ë“ˆ
+4) ë„ë©”ì¸
+
+ì •ë‹µ : 
+
+
+
+ë¬¸ì œ5] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ìƒì„±í•˜ê¸°
+ë¬¸ì œ :  ë³‘í–‰ì œì–´ì˜ ëª©ì ìœ¼ë¡œ ì˜³ì§€ ì•Šì€ ê²ƒì€ ? 
+
+1) ì‚¬ìš©ìžì— ëŒ€í•œ ì‘ë‹µì‹œê°„ ìµœì†Œí™”
+2) ì‹œìŠ¤í…œ í™œìš©ë„ ìµœëŒ€í™”
+3) ë°ì´í„°ë² ì´ìŠ¤ ì¼ê´€ì„± ìœ ì§€
+4) ë°ì´í„°ë² ì´ìŠ¤ ê³µìœ ë„ ìµœì†Œí™”
  
-Á¤´ä : 
+ì •ë‹µ : 
 
-º´Çà Á¦¾î(Concurrency Control)ÀÇ °³³ä : µ¿½Ã¿¡ ¿©·¯°³ÀÇ Æ®·£Àè¼ÇÀ» º´Çà ¼öÇàÇÒ ¶§, Æ®·£Àè¼ÇµéÀÌ DBÀÇ ÀÏ°ü¼ºÀ» ÆÄ±«ÇÏÁö ¾Êµµ·Ï Æ®·£Àè¼Ç °£ÀÇ »óÈ£ÀÛ¿ëÀ» Á¦¾îÇÏ´Â °Í
+ë³‘í–‰ ì œì–´(Concurrency Control)ì˜ ê°œë… : ë™ì‹œì— ì—¬ëŸ¬ê°œì˜ íŠ¸ëžœìž­ì…˜ì„ ë³‘í–‰ ìˆ˜í–‰í•  ë•Œ, íŠ¸ëžœìž­ì…˜ë“¤ì´ DBì˜ ì¼ê´€ì„±ì„ íŒŒê´´í•˜ì§€ ì•Šë„ë¡ íŠ¸ëžœìž­ì…˜ ê°„ì˜ ìƒí˜¸ìž‘ìš©ì„ ì œì–´í•˜ëŠ” ê²ƒ
 
 
 
-¹®Á¦6] ´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º »ý¼ºÇÏ±â
-¹®Á¦ : »ý¼ºµÈ Å×ÀÌºíÀÇ ¸ñ·ÏÀ» È®ÀÎ ÇÏ±â À§ÇÑ  SQL ¹®ÀÌ´Ù. ´ÙÀ½ º¸±â¿¡¼­ [     ] ¿¡ ¾Ë¸Â´Â ÀÚ·á»çÀüÀº ?
+ë¬¸ì œ6] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ìƒì„±í•˜ê¸°
+ë¬¸ì œ : ìƒì„±ëœ í…Œì´ë¸”ì˜ ëª©ë¡ì„ í™•ì¸ í•˜ê¸° ìœ„í•œ  SQL ë¬¸ì´ë‹¤. ë‹¤ìŒ ë³´ê¸°ì—ì„œ [     ] ì— ì•Œë§žëŠ” ìžë£Œì‚¬ì „ì€ ?
 
 SELECT TABLE_NAME, TABLESPACE_NAME FROM [          ];
 
@@ -83,54 +83,54 @@ SELECT TABLE_NAME, TABLESPACE_NAME FROM [          ];
 3) USER_TABLE
 4) SYS_TABLES
 
-Á¤´ä : 1)
+ì •ë‹µ : 1)
 
 
 
-¹®Á¦7] ´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º »ý¼ºÇÏ±â
-¹®Á¦ : ½Ã½ºÅÛ Ä«Å»·Î±×¿¡ ´ëÇÑ ¼³¸íÀ¸·Î ¿ÇÁö ¾ÊÀº °ÍÀº ? 
+ë¬¸ì œ7] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ìƒì„±í•˜ê¸°
+ë¬¸ì œ : ì‹œìŠ¤í…œ ì¹´íƒˆë¡œê·¸ì— ëŒ€í•œ ì„¤ëª…ìœ¼ë¡œ ì˜³ì§€ ì•Šì€ ê²ƒì€ ? 
 
-1) ½Ã½ºÅÛ Ä«Å»·Î±×´Â DBMS°¡ ½º½º·Î »ý¼ºÇÏ°í À¯ÁöÇÏ´Â µ¥ÀÌÅÍº£ÀÌ½º ³»ÀÇ Æ¯º°ÇÑ Å×ÀÌºíµéÀÇ ÁýÇÕÃ¼ÀÌ´Ù.
-2) ÀÏ¹Ý »ç¿ëÀÚµµ ½Ã½ºÅÛ Ä«Å»·Î±×ÀÇ ³»¿ëÀ» °Ë»öÇÒ ¼ö ÀÖ´Ù.
-3) ½Ã½ºÅÛ Ä«Å»·Î±× ³»ÀÇ °¢ Å×ÀÌºíÀº DBMS¿¡¼­ Áö¿øÇÏ´Â °³Ã¼µé¿¡ °üÇÑ Á¤º¸¸¦ Æ÷ÇÔÇÑ´Ù.
-4) ½Ã½ºÅÛ Ä«Å»·Î±×¿¡ ´ëÇÑ °»½ÅÀº µ¥ÀÌÅÍº£ÀÌ½ºÀÇ ¹«°á¼º À¯Áö¸¦ À§ÇÏ¿© »ç¿ëÀÚ°¡ Á÷Á¢ °»½ÅÇØ¾ß ÇÑ´Ù.
+1) ì‹œìŠ¤í…œ ì¹´íƒˆë¡œê·¸ëŠ” DBMSê°€ ìŠ¤ìŠ¤ë¡œ ìƒì„±í•˜ê³  ìœ ì§€í•˜ëŠ” ë°ì´í„°ë² ì´ìŠ¤ ë‚´ì˜ íŠ¹ë³„í•œ í…Œì´ë¸”ë“¤ì˜ ì§‘í•©ì²´ì´ë‹¤.
+2) ì¼ë°˜ ì‚¬ìš©ìžë„ ì‹œìŠ¤í…œ ì¹´íƒˆë¡œê·¸ì˜ ë‚´ìš©ì„ ê²€ìƒ‰í•  ìˆ˜ ìžˆë‹¤.
+3) ì‹œìŠ¤í…œ ì¹´íƒˆë¡œê·¸ ë‚´ì˜ ê° í…Œì´ë¸”ì€ DBMSì—ì„œ ì§€ì›í•˜ëŠ” ê°œì²´ë“¤ì— ê´€í•œ ì •ë³´ë¥¼ í¬í•¨í•œë‹¤.
+4) ì‹œìŠ¤í…œ ì¹´íƒˆë¡œê·¸ì— ëŒ€í•œ ê°±ì‹ ì€ ë°ì´í„°ë² ì´ìŠ¤ì˜ ë¬´ê²°ì„± ìœ ì§€ë¥¼ ìœ„í•˜ì—¬ ì‚¬ìš©ìžê°€ ì§ì ‘ ê°±ì‹ í•´ì•¼ í•œë‹¤.
 
-Á¤´ä : 
+ì •ë‹µ : 
  
 
 
-¹®Á¦8] ´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º ¿ÀºêÁ§Æ® »ý¼ºÇÏ±â
-¹®Á¦ : ´ÙÀ½ ¿¡¼­ DDL(Data Definition Language)¹®ÀÌ ¾Æ´Ñ°ÍÀº ?
+ë¬¸ì œ8] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¸Œì íŠ¸ ìƒì„±í•˜ê¸°
+ë¬¸ì œ : ë‹¤ìŒ ì—ì„œ DDL(Data Definition Language)ë¬¸ì´ ì•„ë‹Œê²ƒì€ ?
 
 1) CREATE
 2) ALTER
 3) DELETE
 4) DROP
 
-Á¤´ä : 3)
+ì •ë‹µ : 3)
 
 
 
-¹®Á¦9]´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º ¿ÀºêÁ§Æ® »ý¼ºÇÏ±â
-¹®Á¦ :  µ¥ÀÌÅÍº£ÀÌ½ºÀÇ ¹°¸®Àû ¼³°è ¿É¼Ç ¼±ÅÃ ½Ã °í·Á »çÇ×À¸·Î °Å¸®°¡ ¸Õ °ÍÀº ? 
+ë¬¸ì œ9]ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¸Œì íŠ¸ ìƒì„±í•˜ê¸°
+ë¬¸ì œ :  ë°ì´í„°ë² ì´ìŠ¤ì˜ ë¬¼ë¦¬ì  ì„¤ê³„ ì˜µì…˜ ì„ íƒ ì‹œ ê³ ë ¤ ì‚¬í•­ìœ¼ë¡œ ê±°ë¦¬ê°€ ë¨¼ ê²ƒì€ ? 
 
-1) ½ºÅ°¸¶ÀÇ Æò°¡
-2) ÀÀ´ä½Ã°£
-3) ÀúÀå°ø°£ÀÇ È¿À²È­
-4) Æ®·£Àè¼Ç Ã³¸®µµ(throughput)
+1) ìŠ¤í‚¤ë§ˆì˜ í‰ê°€
+2) ì‘ë‹µì‹œê°„
+3) ì €ìž¥ê³µê°„ì˜ íš¨ìœ¨í™”
+4) íŠ¸ëžœìž­ì…˜ ì²˜ë¦¬ë„(throughput)
 
-Á¤´ä : 1)
+ì •ë‹µ : 1)
 
 
 
-¹®Á¦10] ´É·Â´ÜÀ§¿ä¼Ò : µ¥ÀÌÅÍº£ÀÌ½º ¿ÀºêÁ§Æ® »ý¼ºÇÏ±â
-¹®Á¦ : USER01 »ç¿ëÀÚ°¡ ÀÚ½ÅÀÇ ÆÐ½º¿öµå¸¦ java123À¸·Î º¯°æÇÏ±â À§ÇÑ SQL ±¸¹®À¸·Î ¿Ã¹Ù¸¥ °ÍÀº ?
+ë¬¸ì œ10] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ë°ì´í„°ë² ì´ìŠ¤ ì˜¤ë¸Œì íŠ¸ ìƒì„±í•˜ê¸°
+ë¬¸ì œ : USER01 ì‚¬ìš©ìžê°€ ìžì‹ ì˜ íŒ¨ìŠ¤ì›Œë“œë¥¼ java123ìœ¼ë¡œ ë³€ê²½í•˜ê¸° ìœ„í•œ SQL êµ¬ë¬¸ìœ¼ë¡œ ì˜¬ë°”ë¥¸ ê²ƒì€ ?
 
 1) ALTER  USER  IDENTIFIED  BY  java123;
 2) ALTER  USER  USER01  IDENTIFIED  BY  java123;
 3) MODIFY USER  IDENTIFIED  BY  java123;
 4) MODIFY USER  USER01  IDENTIFIED  BY  java123;
 
-Á¤´ä : 2)
+ì •ë‹µ : 2)
 
 

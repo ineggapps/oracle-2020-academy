@@ -1,4 +1,4 @@
-CREATE TABLE roomReservation
+﻿CREATE TABLE roomReservation
 (
      reservationNum  NUMBER PRIMARY KEY
      ,roomNum        NUMBER  NOT NULL
@@ -32,118 +32,118 @@ COMMIT;
 SELECT reservationNum, roomNum, checkIn, checkOut FROM roomReservation
 ORDER BY checkIn ASC;
 
---�� ��� 1,2,3,5,8,9,10
+--방 목록 1,2,3,5,8,9,10
 SELECT distinct roomNum from roomReservation
 order by roomNum;
 
 
---���� ������ ���
+--■■■ 선생님 답안
 SELECT * FROM roomreservation;
 
---������ �Ұ����� ����� ���� 4�����̴�.
+--예약이 불가능한 경우의 수는 4가지이다.
 SELECT * FROM roomreservation
 WHERE(
     TO_DATE(checkIn) >= TO_DATE('20200724') AND
-    TO_DATE(checkout) < TO_DATE('20200729') --CHECKOUT �� �� üũ���� �� �� �����Ƿ� ������ ���Խ��Ѽ� �� ��( <=�� �ƴ϶� <)
+    TO_DATE(checkout) < TO_DATE('20200729') --CHECKOUT 한 날 체크인을 할 수 있으므로 범위에 포함시켜선 안 됨( <=가 아니라 <)
 ) 
 OR ( 
-    TO_DATE(checkIn) <= TO_DATE('20200724') AND --7�� 24���� �����Ͽ� �� �����̰�
-    TO_DATE(checkout) >= TO_DATE('20200724') --7�� 24���� �����Ͽ� �� ������ ���
+    TO_DATE(checkIn) <= TO_DATE('20200724') AND --7월 24일을 포함하여 그 이전이고
+    TO_DATE(checkout) >= TO_DATE('20200724') --7월 24일을 포함하여 그 이후인 경우
 )
 OR (    
-    TO_DATE(checkout) > TO_DATE('20200724') AND --üũ�ƿ��� 7�� 24��~29�� ����
+    TO_DATE(checkout) > TO_DATE('20200724') AND --체크아웃이 7월 24일~29일 사이
     TO_DATE(checkout) < TO_DATE('20200729') 
 )
 OR ( 
     TO_DATE(checkIn) >= TO_DATE('20200724') AND
-    TO_DATE(checkIn) < TO_DATE('20200729') --üũ���� 7�� 24��~29�� ����
+    TO_DATE(checkIn) < TO_DATE('20200729') --체크인이 7월 24일~29일 사이
 )
 ORDER BY checkIn asc;
 ---
 
--- 20200724 ~ 20200729 ���� �� ���� ��� ���. 0729�� checkOut �Ǹ� 0729�� checkIn ����
---�ڡ�
+-- 20200724 ~ 20200729 예약 된 룸을 모두 출력. 0729에 checkOut 되면 0729에 checkIn 가능
+--★★
 WITH tb as (
     SELECT 
-        TO_DATE('20200724') üũ��, 
-        TO_DATE('20200729') üũ�ƿ� 
+        TO_DATE('20200724') 체크인, 
+        TO_DATE('20200729') 체크아웃 
     FROM dual
 )
 SELECT reservationnum, roomnum, checkin, checkout, 
             CASE
                 WHEN 
-                    --����1. ���� üũ���ϴ� ��¥�� ���� üũ���ϴ� ��¥�� ������ �Ұ���
-                    üũ�� = TO_DATE(checkin) OR
-                    --����2. ���� üũ���ϴ� ��¥�� ���� üũ�ƿ� �ϴ� ��¥���� �����̸� �Ұ���
-                    üũ�� < TO_DATE(checkout) 
-                THEN '�Ұ�'
-                ELSE '����'
-            END ����,
-            (TO_DATE(checkout) - TO_DATE(checkin)+1) �����ϼ�,
-            TO_DATE(checkout) - (üũ�ƿ�) "���� üũ�ƿ���- ���� üũ�ƿ���",
-            (üũ��)  - TO_DATE(checkout) "���� üũ���� �� ���� üũ�ƿ� �ϴ� ��¥���� ����", --���� üũ�ƿ� �ϴ� ��¥�� ��ġ�� �� ������
-            (üũ�ƿ�) - TO_DATE(checkin) "���� üũ�ƿ� �� �� ���� üũ�� �ϴ� ��¥���� ����"--���� üũ�ƿ� �ϴ� ��¥�� ��ġ�� �� ������.
+                    --조건1. 내가 체크인하는 날짜와 남이 체크인하는 날짜가 같으면 불가능
+                    체크인 = TO_DATE(checkin) OR
+                    --조건2. 내가 체크인하는 날짜가 남이 체크아웃 하는 날짜보다 이전이면 불가능
+                    체크인 < TO_DATE(checkout) 
+                THEN '불가'
+                ELSE '가능'
+            END 예약,
+            (TO_DATE(checkout) - TO_DATE(checkin)+1) 숙박일수,
+            TO_DATE(checkout) - (체크아웃) "남의 체크아웃일- 나의 체크아웃일",
+            (체크인)  - TO_DATE(checkout) "내가 체크인할 때 남이 체크아웃 하는 날짜와의 차이", --남이 체크아웃 하는 날짜와 겹치는 건 괜찮다
+            (체크아웃) - TO_DATE(checkin) "내가 체크아웃 할 때 남이 체크인 하는 날짜와의 차이"--내가 체크아웃 하는 날짜와 겹치는 건 괜찮다.
 FROM roomreservation, tb
-WHERE --üũ�ƿ��� üũ�� ��¥�� ���� üũ���ϰ� �ƿ��ϴ� ��¥ ���ֿ� ��ġ���� ���͸�
-         (üũ��)  - TO_DATE(checkout) <= 0 AND
-         (üũ�ƿ�) - TO_DATE(checkin)  >= 0
+WHERE --체크아웃과 체크인 날짜가 내가 체크인하고 아웃하는 날짜 범주에 걸치는지 필터링
+         (체크인)  - TO_DATE(checkout) <= 0 AND
+         (체크아웃) - TO_DATE(checkin)  >= 0
 ORDER BY checkin, roomnum;
---��
--- 20200727 ~ 20200728 ���� �� ��. (5, 1, 3, 8)
---�ڡ�
+--★
+-- 20200727 ~ 20200728 예약 된 룸. (5, 1, 3, 8)
+--★★
 WITH tb as (
     SELECT 
-        TO_DATE('20200727') üũ��, 
-        TO_DATE('20200728') üũ�ƿ� 
+        TO_DATE('20200727') 체크인, 
+        TO_DATE('20200728') 체크아웃 
     FROM dual
 )
 SELECT reservationnum, roomnum, checkin, checkout, 
             CASE
                 WHEN 
-                    --����1. ���� üũ���ϴ� ��¥�� ���� üũ���ϴ� ��¥�� ������ �Ұ���
-                    üũ�� = TO_DATE(checkin) OR
-                    --����2. ���� üũ���ϴ� ��¥�� ���� üũ�ƿ� �ϴ� ��¥���� �����̸� �Ұ���
-                    üũ�� < TO_DATE(checkout) 
-                THEN '�Ұ�'
-                ELSE '����'
-            END ����,
-            (TO_DATE(checkout) - TO_DATE(checkin)+1) �����ϼ�,
-            TO_DATE(checkout) - (üũ�ƿ�) "���� üũ�ƿ���- ���� üũ�ƿ���",
-            (üũ��)  - TO_DATE(checkout) "���� üũ���� �� ���� üũ�ƿ� �ϴ� ��¥���� ����", --���� üũ�ƿ� �ϴ� ��¥�� ��ġ�� �� ������
-            (üũ�ƿ�) - TO_DATE(checkin) "���� üũ�ƿ� �� �� ���� üũ�� �ϴ� ��¥���� ����"--���� üũ�ƿ� �ϴ� ��¥�� ��ġ�� �� ������.
+                    --조건1. 내가 체크인하는 날짜와 남이 체크인하는 날짜가 같으면 불가능
+                    체크인 = TO_DATE(checkin) OR
+                    --조건2. 내가 체크인하는 날짜가 남이 체크아웃 하는 날짜보다 이전이면 불가능
+                    체크인 < TO_DATE(checkout) 
+                THEN '불가'
+                ELSE '가능'
+            END 예약,
+            (TO_DATE(checkout) - TO_DATE(checkin)+1) 숙박일수,
+            TO_DATE(checkout) - (체크아웃) "남의 체크아웃일- 나의 체크아웃일",
+            (체크인)  - TO_DATE(checkout) "내가 체크인할 때 남이 체크아웃 하는 날짜와의 차이", --남이 체크아웃 하는 날짜와 겹치는 건 괜찮다
+            (체크아웃) - TO_DATE(checkin) "내가 체크아웃 할 때 남이 체크인 하는 날짜와의 차이"--내가 체크아웃 하는 날짜와 겹치는 건 괜찮다.
 FROM roomreservation, tb
-WHERE --üũ�ƿ��� üũ�� ��¥�� ���� üũ���ϰ� �ƿ��ϴ� ��¥ ���ֿ� ��ġ���� ���͸�
-         (üũ��)  - TO_DATE(checkout) <= 0 AND
-         (üũ�ƿ�) - TO_DATE(checkin)  >= 0
+WHERE --체크아웃과 체크인 날짜가 내가 체크인하고 아웃하는 날짜 범주에 걸치는지 필터링
+         (체크인)  - TO_DATE(checkout) <= 0 AND
+         (체크아웃) - TO_DATE(checkin)  >= 0
 ORDER BY checkin, roomnum;
---��
--- 20200730 ~ 20200801 ���� �� ��. (roomnum: 1,3)
---20200727~20200730(3) ���̿� �־ �����Ͱ� �������;� ��.
---�׷��ٸ�... 20200730
+--★
+-- 20200730 ~ 20200801 예약 된 룸. (roomnum: 1,3)
+--20200727~20200730(3) 사이에 있어도 데이터가 뽑혀나와야 함.
+--그렇다면... 20200730
 
---�ڡ�
+--★★
 WITH tb as (
     SELECT 
-        TO_DATE('20200730') üũ��, 
-        TO_DATE('20200801') üũ�ƿ� 
+        TO_DATE('20200730') 체크인, 
+        TO_DATE('20200801') 체크아웃 
     FROM dual
 )
 SELECT reservationnum, roomnum, checkin, checkout, 
             CASE
                 WHEN 
-                    --����1. ���� üũ���ϴ� ��¥�� ���� üũ���ϴ� ��¥�� ������ �Ұ���
-                    üũ�� = TO_DATE(checkin) OR
-                    --����2. ���� üũ���ϴ� ��¥�� ���� üũ�ƿ� �ϴ� ��¥���� �����̸� �Ұ���
-                    üũ�� < TO_DATE(checkout) 
-                THEN '�Ұ�'
-                ELSE '����'
-            END ����,
-            (TO_DATE(checkout) - TO_DATE(checkin)+1) �����ϼ�,
-            TO_DATE(checkout) - (üũ�ƿ�) "���� üũ�ƿ���- ���� üũ�ƿ���",
-            (üũ��)  - TO_DATE(checkout) "���� üũ���� �� ���� üũ�ƿ� �ϴ� ��¥���� ����", --���� üũ�ƿ� �ϴ� ��¥�� ��ġ�� �� ������
-            (üũ�ƿ�) - TO_DATE(checkin) "���� üũ�ƿ� �� �� ���� üũ�� �ϴ� ��¥���� ����"--���� üũ�ƿ� �ϴ� ��¥�� ��ġ�� �� ������.
+                    --조건1. 내가 체크인하는 날짜와 남이 체크인하는 날짜가 같으면 불가능
+                    체크인 = TO_DATE(checkin) OR
+                    --조건2. 내가 체크인하는 날짜가 남이 체크아웃 하는 날짜보다 이전이면 불가능
+                    체크인 < TO_DATE(checkout) 
+                THEN '불가'
+                ELSE '가능'
+            END 예약,
+            (TO_DATE(checkout) - TO_DATE(checkin)+1) 숙박일수,
+            TO_DATE(checkout) - (체크아웃) "남의 체크아웃일- 나의 체크아웃일",
+            (체크인)  - TO_DATE(checkout) "내가 체크인할 때 남이 체크아웃 하는 날짜와의 차이", --남이 체크아웃 하는 날짜와 겹치는 건 괜찮다
+            (체크아웃) - TO_DATE(checkin) "내가 체크아웃 할 때 남이 체크인 하는 날짜와의 차이"--내가 체크아웃 하는 날짜와 겹치는 건 괜찮다.
 FROM roomreservation, tb
-WHERE --üũ�ƿ��� üũ�� ��¥�� ���� üũ���ϰ� �ƿ��ϴ� ��¥ ���ֿ� ��ġ���� ���͸�
-         (üũ��)  - TO_DATE(checkout) <= 0 AND
-         (üũ�ƿ�) - TO_DATE(checkin)  >= 0
+WHERE --체크아웃과 체크인 날짜가 내가 체크인하고 아웃하는 날짜 범주에 걸치는지 필터링
+         (체크인)  - TO_DATE(checkout) <= 0 AND
+         (체크아웃) - TO_DATE(checkin)  >= 0
 ORDER BY checkin, roomnum;

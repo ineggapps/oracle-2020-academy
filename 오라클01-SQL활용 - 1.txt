@@ -1,63 +1,63 @@
-±³°ú¸í¸ñ : 
-´É·Â´ÜÀ§¸í : SQLÈ°¿ë
-¼¼ºÎ±³À°³»¿ë : ±âº» SQL ÀÛ¼ºÇÏ±â, °í±Þ SQL ÀÛ¼ºÇÏ±â
+ï»¿êµê³¼ëª…ëª© : 
+ëŠ¥ë ¥ë‹¨ìœ„ëª… : SQLí™œìš©
+ì„¸ë¶€êµìœ¡ë‚´ìš© : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°, ê³ ê¸‰ SQL ìž‘ì„±í•˜ê¸°
 
 =============================================
-¹®Á¦1] ´É·Â´ÜÀ§¿ä¼Ò : ±âº» SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : SQL ±¸¹®¿¡¼­ "HAVING" ÀýÀº ¹Ýµå½Ã ¾î¶² ±¸¹®°ú »ç¿ëµÇ¾î¾ß ÇÏ´Â°¡ ?
+ë¬¸ì œ1] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : SQL êµ¬ë¬¸ì—ì„œ "HAVING" ì ˆì€ ë°˜ë“œì‹œ ì–´ë–¤ êµ¬ë¬¸ê³¼ ì‚¬ìš©ë˜ì–´ì•¼ í•˜ëŠ”ê°€ ?
 
 1) GROUP BY
 2) ORDER BY
 3) UPDATE
 4) JOIN
 
-Á¤´ä : 1)
+ì •ë‹µ : 1)
 
 
 
-¹®Á¦2] ´É·Â´ÜÀ§¿ä¼Ò : ±âº» SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ´ÙÀ½Àº ÇÐ»ýÀÌ¶ó´Â °³Ã¼ÀÇ ¼Ó¼ºÀ» ³ªÅ¸³»°í ÀÖ´Ù. ¿©±â¼­ "ÇÐ°ú"¸¦ ±âº» Å°·Î »ç¿ëÇÏ±â °ï¶õÇÑ ÀÌÀ¯·Î °¡Àå Å¸´çÇÑ °ÍÀº ?
-º¸±â :
-ÇÐ»ý(ÇÐ°ú, ¼º¸í, ÇÐ¹ø, ¼¼ºÎÀü°ø, ÁÖ¼Ò, ¿ìÆí¹øÈ£)
+ë¬¸ì œ2] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ë‹¤ìŒì€ í•™ìƒì´ë¼ëŠ” ê°œì²´ì˜ ì†ì„±ì„ ë‚˜íƒ€ë‚´ê³  ìžˆë‹¤. ì—¬ê¸°ì„œ "í•™ê³¼"ë¥¼ ê¸°ë³¸ í‚¤ë¡œ ì‚¬ìš©í•˜ê¸° ê³¤ëž€í•œ ì´ìœ ë¡œ ê°€ìž¥ íƒ€ë‹¹í•œ ê²ƒì€ ?
+ë³´ê¸° :
+í•™ìƒ(í•™ê³¼, ì„±ëª…, í•™ë²ˆ, ì„¸ë¶€ì „ê³µ, ì£¼ì†Œ, ìš°íŽ¸ë²ˆí˜¸)
 
-1) ÇÐ°ú´Â ±â¾ïÇÏ±â ¾î·Æ´Ù.
-2) µ¿ÀÏÇÑ ÇÐ°ú¸íÀ» °¡Áø ÇÐ»ýÀÌ µÎ ¸í ÀÌ»ó Á¸ÀçÇÒ ¼ö ÀÖ´Ù.
-3) ÇÐ°ú´Â Á¤·ÄÇÏ´Âµ¥ ¸¹Àº ½Ã°£ÀÌ ¼Ò¿äµÈ´Ù.
-4) ÇÐ°ú´Â ±â¾ï °ø°£À» ¸¹ÀÌ ÇÊ¿ä·Î ÇÑ´Ù.
+1) í•™ê³¼ëŠ” ê¸°ì–µí•˜ê¸° ì–´ë µë‹¤.
+2) ë™ì¼í•œ í•™ê³¼ëª…ì„ ê°€ì§„ í•™ìƒì´ ë‘ ëª… ì´ìƒ ì¡´ìž¬í•  ìˆ˜ ìžˆë‹¤.
+3) í•™ê³¼ëŠ” ì •ë ¬í•˜ëŠ”ë° ë§Žì€ ì‹œê°„ì´ ì†Œìš”ëœë‹¤.
+4) í•™ê³¼ëŠ” ê¸°ì–µ ê³µê°„ì„ ë§Žì´ í•„ìš”ë¡œ í•œë‹¤.
 
-Á¤´ä : 2)
-
-
-
-¹®Á¦3] ´É·Â´ÜÀ§¿ä¼Ò : ±âº» SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ´ÙÀ½Àº ÆÇ¸Å½ÇÀûÀÌ¶ó´Â °³Ã¼ÀÇ ¼Ó¼ºÀ» ³ªÅ¸³»°í ÀÖ´Ù. ¿©±â¿¡¼­ µµ½Ã°¡ '¼­¿ï' ÀÎ ÀÚ·áÁß ÆÇ¸Å¾× ³»¸²Â÷¼øÀ¸·Î ÁöÁ¡¸í°ú ÆÇ¸Å¾×À» Ãâ·ÂÇÏ°íÀÚ ÇÑ´Ù. °¡Àå ÀûÀýÇÑ SQL±¸¹®Àº ?
-º¸±â :
-ÆÇ¸Å½ÇÀû(µµ½Ã, ÁöÁ¡¸í, ÆÇ¸Å¾×) 
-
-1) SELECT ÁöÁ¡¸í, ÆÇ¸Å¾× FROM ÆÇ¸Å½ÇÀû WHERE µµ½Ã = '¼­¿ï' ORDER BY ÆÇ¸Å¾× ASC;
-2) SELECT ÁöÁ¡¸í, ÆÇ¸Å¾× FROM ÆÇ¸Å½ÇÀû WHERE µµ½Ã = '¼­¿ï' SORT BY ÆÇ¸Å¾× DESC;
-3) SELECT ÁöÁ¡¸í, ÆÇ¸Å¾× FROM ÆÇ¸Å½ÇÀû WHERE µµ½Ã = '¼­¿ï' SORT BY ÆÇ¸Å¾× ASC;
-4) SELECT ÁöÁ¡¸í, ÆÇ¸Å¾× FROM ÆÇ¸Å½ÇÀû WHERE µµ½Ã = '¼­¿ï' ORDER BY ÆÇ¸Å¾× DESC;
-
-Á¤´ä : 4)
+ì •ë‹µ : 2)
 
 
 
-¹®Á¦4] ´É·Â´ÜÀ§¿ä¼Ò : ±âº» SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : SQL¿¡¼­ DELETE ¸í·É¿¡ ´ëÇÑ ¼³¸íÀ¸·Î ¿Ã¹Ù¸£Áö ¾Ê´Â °ÍÀº ?
+ë¬¸ì œ3] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ë‹¤ìŒì€ íŒë§¤ì‹¤ì ì´ë¼ëŠ” ê°œì²´ì˜ ì†ì„±ì„ ë‚˜íƒ€ë‚´ê³  ìžˆë‹¤. ì—¬ê¸°ì—ì„œ ë„ì‹œê°€ 'ì„œìš¸' ì¸ ìžë£Œì¤‘ íŒë§¤ì•¡ ë‚´ë¦¼ì°¨ìˆœìœ¼ë¡œ ì§€ì ëª…ê³¼ íŒë§¤ì•¡ì„ ì¶œë ¥í•˜ê³ ìž í•œë‹¤. ê°€ìž¥ ì ì ˆí•œ SQLêµ¬ë¬¸ì€ ?
+ë³´ê¸° :
+íŒë§¤ì‹¤ì (ë„ì‹œ, ì§€ì ëª…, íŒë§¤ì•¡) 
 
-1) Å×ÀÌºíÀÇ ÇàÀ» »èÁ¦ÇÒ ¶§ »ç¿ëÇÑ´Ù.
-2) WHERE Á¶°ÇÀýÀÌ ¾ø´Â DELETE ¸í·ÉÀ» ¼öÇàÇÏ¸é DROP TABLE ¸í·ÉÀ» ¼öÇàÇßÀ» ¶§¿Í °°Àº È¿°ú¸¦ ¾òÀ» ¼ö ÀÖ´Ù.
-3) SQLÀ» »ç¿ë ¿ëµµ¿¡ µû¶ó ºÐ·ùÇÒ °æ¿ì DML¿¡ ÇØ´çÇÑ´Ù.
-4) ±âº» »ç¿ë Çü½ÄÀº ¡ÈDELETE FROM Å×ÀÌºí [WHERE Á¶°Ç];¡ÈÀÌ´Ù.
+1) SELECT ì§€ì ëª…, íŒë§¤ì•¡ FROM íŒë§¤ì‹¤ì  WHERE ë„ì‹œ = 'ì„œìš¸' ORDER BY íŒë§¤ì•¡ ASC;
+2) SELECT ì§€ì ëª…, íŒë§¤ì•¡ FROM íŒë§¤ì‹¤ì  WHERE ë„ì‹œ = 'ì„œìš¸' SORT BY íŒë§¤ì•¡ DESC;
+3) SELECT ì§€ì ëª…, íŒë§¤ì•¡ FROM íŒë§¤ì‹¤ì  WHERE ë„ì‹œ = 'ì„œìš¸' SORT BY íŒë§¤ì•¡ ASC;
+4) SELECT ì§€ì ëª…, íŒë§¤ì•¡ FROM íŒë§¤ì‹¤ì  WHERE ë„ì‹œ = 'ì„œìš¸' ORDER BY íŒë§¤ì•¡ DESC;
 
-Á¤´ä : 2)
+ì •ë‹µ : 4)
 
 
 
-¹®Á¦5] ´É·Â´ÜÀ§¿ä¼Ò : ±âº» SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ¾Æ·¡ÀÇ SQL ¿¡ ´ëÇØ¼­ ½ÇÇà ¼ø¼­¸¦ ¿Ã¹Ù¸£°Ô ³ª¿­ÇÑ °ÍÀº ? 
-º¸±â :
+ë¬¸ì œ4] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : SQLì—ì„œ DELETE ëª…ë ¹ì— ëŒ€í•œ ì„¤ëª…ìœ¼ë¡œ ì˜¬ë°”ë¥´ì§€ ì•ŠëŠ” ê²ƒì€ ?
+
+1) í…Œì´ë¸”ì˜ í–‰ì„ ì‚­ì œí•  ë•Œ ì‚¬ìš©í•œë‹¤.
+2) WHERE ì¡°ê±´ì ˆì´ ì—†ëŠ” DELETE ëª…ë ¹ì„ ìˆ˜í–‰í•˜ë©´ DROP TABLE ëª…ë ¹ì„ ìˆ˜í–‰í–ˆì„ ë•Œì™€ ê°™ì€ íš¨ê³¼ë¥¼ ì–»ì„ ìˆ˜ ìžˆë‹¤.
+3) SQLì„ ì‚¬ìš© ìš©ë„ì— ë”°ë¼ ë¶„ë¥˜í•  ê²½ìš° DMLì— í•´ë‹¹í•œë‹¤.
+4) ê¸°ë³¸ ì‚¬ìš© í˜•ì‹ì€ â€³DELETE FROM í…Œì´ë¸” [WHERE ì¡°ê±´];â€³ì´ë‹¤.
+
+ì •ë‹µ : 2)
+
+
+
+ë¬¸ì œ5] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ì•„ëž˜ì˜ SQL ì— ëŒ€í•´ì„œ ì‹¤í–‰ ìˆœì„œë¥¼ ì˜¬ë°”ë¥´ê²Œ ë‚˜ì—´í•œ ê²ƒì€ ? 
+ë³´ê¸° :
 SELECT DEPTNO, COUNT(EMPNO)
 FROM EMP
 WHERE SAL >= 500
@@ -65,18 +65,18 @@ GROUP BY DEPTNO
 HAVING COUNT(EMPNO) > 2
 ORDER BY DEPTNO;
 
-1) FROM ¡æ WHERE ¡æ HAVING ¡æ GROUP BY ¡æ ORDER BY ¡æ SELECT
-2) FROM ¡æ WHERE ¡æ GROUP BY ¡æ HAVING ¡æ ORDER BY ¡æ SELECT
-3) FROM ¡æ WHERE ¡æ GROUP BY ¡æ HAVING ¡æ SELECT ¡æ ORDER BY
-4) FROM ¡æ WHERE ¡æ GROUP BY ¡æ SELECT ¡æ HAVING ¡æ ORDER BY
+1) FROM â†’ WHERE â†’ HAVING â†’ GROUP BY â†’ ORDER BY â†’ SELECT
+2) FROM â†’ WHERE â†’ GROUP BY â†’ HAVING â†’ ORDER BY â†’ SELECT
+3) FROM â†’ WHERE â†’ GROUP BY â†’ HAVING â†’ SELECT â†’ ORDER BY
+4) FROM â†’ WHERE â†’ GROUP BY â†’ SELECT â†’ HAVING â†’ ORDER BY
 
-Á¤´ä :  
+ì •ë‹µ :  
 
 
 
-¹®Á¦6] ´É·Â´ÜÀ§¿ä¼Ò : ±âº» SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ´ÙÀ½ ±¸¹®À» ¼ø¼­ÀûÀ¸·Î ½ÇÇà ÇÑ °æ¿ì ¸¶Áö¸· SELECT ±¸¹®ÀÇ ½ÇÇà °á°ú´Â ?
-º¸±â : 
+ë¬¸ì œ6] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê¸°ë³¸ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ë‹¤ìŒ êµ¬ë¬¸ì„ ìˆœì„œì ìœ¼ë¡œ ì‹¤í–‰ í•œ ê²½ìš° ë§ˆì§€ë§‰ SELECT êµ¬ë¬¸ì˜ ì‹¤í–‰ ê²°ê³¼ëŠ” ?
+ë³´ê¸° : 
  01 : CREATE TABLE TAB1 (N1 NUMBER, N2 NUMBER) ;
  02 : INSERT INTO TAB1 VALUES (1,1);
  03 : INSERT INTO TAB1 VALUES (2,2);
@@ -86,44 +86,44 @@ ORDER BY DEPTNO;
 
 1) 0
 2) 2
-3) ¿À·ù¹ß»ý
+3) ì˜¤ë¥˜ë°œìƒ
 4) NULL
 
-Á¤´ä : 
+ì •ë‹µ : 
 
 
 
-¹®Á¦7] ´É·Â´ÜÀ§¿ä¼Ò : °í±Þ SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ¸±·¹ÀÌ¼ÇÀÇ Æ¯Â¡À¸·Î ¿Ç¹Ù¸£Áö ¾Ê´Â °ÍÀº ?
+ë¬¸ì œ7] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê³ ê¸‰ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ë¦´ë ˆì´ì…˜ì˜ íŠ¹ì§•ìœ¼ë¡œ ì˜³ë°”ë¥´ì§€ ì•ŠëŠ” ê²ƒì€ ?
 
-1) ÇÑ ¸±·¹ÀÌ¼Ç¿¡ Æ÷ÇÔµÈ Æ©ÇÃ »çÀÌ¿¡´Â ¼ø¼­°¡ ¾ø´Ù.
-2) ¼Ó¼ºÀÇ °ªÀº ³í¸®ÀûÀ¸·Î ´õ ÀÌ»ó ÂÉ°¶ ¼ö ¾ø´Â ¿øÀÚ °ªÀÌ´Ù.
-3) ÇÑ ¸±·¹ÀÌ¼Ç¿¡ Æ÷ÇÔµÈ Æ©ÇÃµéÀº ¸ðµÎ »óÀÌÇÏ´Ù.
-4) ÇÑ ¸±·¹ÀÌ¼ÇÀ» ±¸¼ºÇÏ´Â ¼Ó¼ºµé »çÀÌÀÇ ¼ø¼­´Â Á¸ÀçÇÏ¸ç, Áß¿äÇÑ ÀÇ¹Ì¸¦ °¡Áø´Ù.
+1) í•œ ë¦´ë ˆì´ì…˜ì— í¬í•¨ëœ íŠœí”Œ ì‚¬ì´ì—ëŠ” ìˆœì„œê°€ ì—†ë‹¤.
+2) ì†ì„±ì˜ ê°’ì€ ë…¼ë¦¬ì ìœ¼ë¡œ ë” ì´ìƒ ìª¼ê°¤ ìˆ˜ ì—†ëŠ” ì›ìž ê°’ì´ë‹¤.
+3) í•œ ë¦´ë ˆì´ì…˜ì— í¬í•¨ëœ íŠœí”Œë“¤ì€ ëª¨ë‘ ìƒì´í•˜ë‹¤.
+4) í•œ ë¦´ë ˆì´ì…˜ì„ êµ¬ì„±í•˜ëŠ” ì†ì„±ë“¤ ì‚¬ì´ì˜ ìˆœì„œëŠ” ì¡´ìž¬í•˜ë©°, ì¤‘ìš”í•œ ì˜ë¯¸ë¥¼ ê°€ì§„ë‹¤.
 
-Á¤´ä : 4)
+ì •ë‹µ : 4)
 
 
 
-¹®Á¦8] ´É·Â´ÜÀ§¿ä¼Ò : °í±Þ SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ¾Æ·¡¿Í °°Àº Å×ÀÌºí¿¡ ´ëÇÑ ¼öÇà °á°ú°¡ ´ÙÀ½°ú °°À» ¶§ ºóÄ­¿¡ µé¾î°¥ ±¸¹®Àº ?
-º¸±â :
-<TAB1 Å×ÀÌºí ±¸Á¶>
+ë¬¸ì œ8] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê³ ê¸‰ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ì•„ëž˜ì™€ ê°™ì€ í…Œì´ë¸”ì— ëŒ€í•œ ìˆ˜í–‰ ê²°ê³¼ê°€ ë‹¤ìŒê³¼ ê°™ì„ ë•Œ ë¹ˆì¹¸ì— ë“¤ì–´ê°ˆ êµ¬ë¬¸ì€ ?
+ë³´ê¸° :
+<TAB1 í…Œì´ë¸” êµ¬ì¡°>
 COL1    COL2
 A01      10
 A02      20
 A03      30
-NULL    40   ** ¹®ÀÚ¿­ÀÌ ¾Æ´Ñ NULL ÀÓ
-NULL    50   ** ¹®ÀÚ¿­ÀÌ ¾Æ´Ñ NULL ÀÓ
+NULL    40   ** ë¬¸ìžì—´ì´ ì•„ë‹Œ NULL ìž„
+NULL    50   ** ë¬¸ìžì—´ì´ ì•„ë‹Œ NULL ìž„
 
-<½ÇÇà °á°ú>
+<ì‹¤í–‰ ê²°ê³¼>
 COL1    COL2
 A02      20
 A03      30
 NULL    40
 NULL    50
 
-<¼öÇà SQL>
+<ìˆ˜í–‰ SQL>
 SELECT COL1, COL2
 FROM TAB1
 WHERE [               ];
@@ -133,33 +133,33 @@ WHERE [               ];
 3) NVL(COL1, 'X') <> 'A01'
 4) COL1 = 'A01'
 
-Á¤´ä : 
+ì •ë‹µ : 
 
 
-¹®Á¦9] ´É·Â´ÜÀ§¿ä¼Ò : °í±Þ SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : ´ÙÀ½ Áß °¢ SQL ½ÇÇà °á°ú¸¦ °¡Àå ¿Ã¹Ù¸£°Ô ¼³¸íÇÑ °ÍÀº ?
+ë¬¸ì œ9] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê³ ê¸‰ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : ë‹¤ìŒ ì¤‘ ê° SQL ì‹¤í–‰ ê²°ê³¼ë¥¼ ê°€ìž¥ ì˜¬ë°”ë¥´ê²Œ ì„¤ëª…í•œ ê²ƒì€ ?
 
 1) SELECT COL1, COL2 FROM TAB1 WHERE 1 = 2 ;
-    ¡æ ½ÇÇà ½Ã ¿¡·¯°¡ ¹ß»ýÇÑ´Ù.
+    â†’ ì‹¤í–‰ ì‹œ ì—ëŸ¬ê°€ ë°œìƒí•œë‹¤.
 2) SELECT NVL(COL1,'X') FROM TAB1 WHERE 1 = 2 ;
-    ¡æ ½ÇÇà °á°ú·Î 'X'¸¦ ¹ÝÈ¯ÇÑ´Ù.
+    â†’ ì‹¤í–‰ ê²°ê³¼ë¡œ 'X'ë¥¼ ë°˜í™˜í•œë‹¤.
 3) SELECT NVL(MIN(COL1), 'X') FROM TAB1 WHERE 1 = 2;
-    ¡æ ½ÇÇà °á°ú·Î 'X'¸¦ ¹ÝÈ¯ÇÑ´Ù.
+    â†’ ì‹¤í–‰ ê²°ê³¼ë¡œ 'X'ë¥¼ ë°˜í™˜í•œë‹¤.
 4) SELECT COL1, COL2 FROM TAB1 WHERE 1 = 2 ;
-    ¡æ ½ÇÇà °á°ú·Î ¸ðµç ÇàÀ» Ãâ·ÂÇÑ´Ù.
+    â†’ ì‹¤í–‰ ê²°ê³¼ë¡œ ëª¨ë“  í–‰ì„ ì¶œë ¥í•œë‹¤.
 
-Á¤´ä : 
-
-
+ì •ë‹µ : 
 
 
-¹®Á¦10] ´É·Â´ÜÀ§¿ä¼Ò : °í±Þ SQL ÀÛ¼ºÇÏ±â
-¹®Á¦ : Æ®·£Àè¼Ç¿¡¼­ SQL ¹®µé¿¡ ÀÇÇØ ¼öÇàµÈ ¸ðµç °»½ÅÀ» Ãë¼Ò½ÃÄÑ µ¥ÀÌÅÍº£ÀÌ½º¸¦ Æ®·£Àè¼ÇÀÇ Ã¹ ±¸¹®ÀÌ ½ÇÇàµÇ±â Àü »óÅÂ·Î µÇµ¹¸®´Â Æ®·£Àè¼Ç ¿¬»êÀº ?
+
+
+ë¬¸ì œ10] ëŠ¥ë ¥ë‹¨ìœ„ìš”ì†Œ : ê³ ê¸‰ SQL ìž‘ì„±í•˜ê¸°
+ë¬¸ì œ : íŠ¸ëžœìž­ì…˜ì—ì„œ SQL ë¬¸ë“¤ì— ì˜í•´ ìˆ˜í–‰ëœ ëª¨ë“  ê°±ì‹ ì„ ì·¨ì†Œì‹œì¼œ ë°ì´í„°ë² ì´ìŠ¤ë¥¼ íŠ¸ëžœìž­ì…˜ì˜ ì²« êµ¬ë¬¸ì´ ì‹¤í–‰ë˜ê¸° ì „ ìƒíƒœë¡œ ë˜ëŒë¦¬ëŠ” íŠ¸ëžœìž­ì…˜ ì—°ì‚°ì€ ?
 
 1) CANCEL
 2) COMMIT
 3) RUN
 4) ROLLBACK
 
-Á¤´ä : 4
+ì •ë‹µ : 4
 
